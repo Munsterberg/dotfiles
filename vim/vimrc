@@ -117,14 +117,28 @@ set laststatus=2
 set t_Co=256
 
 " === Keybindings ===
-:let mapleader = ","
-:imap jk <Esc>
-"Remove all trailing whitespace by pressing F5
+nmap 0 ^
+let mapleader = ","
+imap jk <Esc>
+nmap k gk
+nmap j gj
+" copy entire file to clipboard
+nmap <leader>co ggVG"*y
+nmap <leader>vr :tabe $MYVIMRC<cr>
+nmap <leader>so :source $MYVIMRC<cr>
+" Edit/split/create a file in the same dir as the current
+nmap <leader>e :e <C-R>=escape(expand("%:p:h"), '') . '/'<cr>
+nmap <leader>s :split <C-R>=escape(expand("%:p:h"), '') . '/'<cr>
+nmap <leader>v :vnew <C-R>=escape(expand("%:p:h"), '') . '/'<cr>
+" Remove all trailing whitespace by pressing F5
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 " Bind emmet completion to hh
 imap hh <C-y>,
 " turn off search highlight
 nnoremap <leader><space> :nohlsearch<CR>
+
+" listen to me vim
+command! Q q
 
 " == COLOR SCHEME ==
 colorscheme gruvbox
@@ -187,11 +201,11 @@ function! DeleteHiddenBuffers()
 endfunction
 cabbrev dhb call DeleteHiddenBuffers()
 
-
+autocmd Filetype help nmap <buffer>q :q<cr>
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 autocmd BufWritePre * :call TrimEndLinesMain()
 " Python PEP8 indentation
-au BufNewFile,BufRead *.py setlocal ts=4 sw=4 sts=4 ai fileformat=unix
+autocmd BufNewFile,BufRead *.py setlocal ts=4 sw=4 sts=4 ai fileformat=unix
 " Python Black formatting
 autocmd BufWritePre *.py execute ':Black'
-au BufNewFile,BufRead *.c  setlocal ts=4 sw=4 sts=4 ai fileformat=unix
+autocmd BufNewFile,BufRead *.c  setlocal ts=4 sw=4 sts=4 ai fileformat=unix
