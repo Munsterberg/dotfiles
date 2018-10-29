@@ -7,14 +7,14 @@ set clipboard=unnamed
 " Plugins will be downloaded under the specified directory.
 call plug#begin('~/.vim/plugged')
 
-" Declare the list of plugins.
-" Color scheme plugins
+" Declare the list of plugins.  " Color scheme plugins
 Plug 'morhetz/gruvbox'
 
 " == General editor plugins ==
 Plug 'tpope/vim-surround'
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'tpope/vim-repeat'
+"Plug 'scrooloose/nerdtree'
+"Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdcommenter'
@@ -59,7 +59,7 @@ call plug#end()
 
 " Prettier
 let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue Prettier
+" autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue Prettier
 
 let g:SuperTabDefaultCompletionType = "<c-n>"
 
@@ -77,18 +77,25 @@ let g:ale_linters = {
 let g:jsx_ext_required = 0
 
 "" == scrooloose/nerdtree ==
-nnoremap <C-n> :NERDTreeToggle<CR>
-inoremap <C-n> <ESC>:NERDTreeToggle<CR>
-"cd ~/Sites
-let NERDTreeShowHidden=1 " Show hidden files by default
-let NERDTreeQuitOnOpen=0
-let NERDTreeIgnore=['\.pyc$', '\~$']
-let NERDTreeMinimalUI=1
-let NERDTreeDirArrows = 1
-let g:NERDTreeWinSize=35
-let g:NERDTreeChDirMode=2
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+"nnoremap <C-n> :NERDTreeToggle<CR>
+"inoremap <C-n> <ESC>:NERDTreeToggle<CR>
+"let NERDTreeShowHidden=1 " Show hidden files by default
+"let NERDTreeQuitOnOpen=0
+"let NERDTreeIgnore=['\.pyc$', '\~$']
+"let NERDTreeMinimalUI=1
+"let NERDTreeDirArrows = 1
+"let g:NERDTreeWinSize=35
+"let g:NERDTreeChDirMode=2
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+"" == scrooloose/nerdcommenter ==
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
 
 "" == mattn/emmet-vim ==
 let g:user_emmet_settings = {
@@ -117,7 +124,6 @@ set laststatus=2
 set t_Co=256
 
 " === Keybindings ===
-nmap 0 ^
 let mapleader = ","
 imap jk <Esc>
 nmap k gk
