@@ -1,8 +1,8 @@
 [alias]
-	co = checkout
-	br = branch
-	ci = commit -m
-	st = status --short --branch
+  co = checkout
+  br = branch
+  ci = commit -m
+  st = status --short --branch
   up = !git pull --rebase --prune $@ && git submodule update --init --recursive
   cob = checkout -b
   cm = !git add -A && git commit -m
@@ -11,20 +11,20 @@
   amend = commit -a --amend
   wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
   ignore=!([ ! -e .gitignore ] && touch .gitignore) | echo $1 >>.gitignore
-	commend = commit --amend --no-edit
-	it = !git init && git commit -m “root” --allow-empty
-	staaash = stash --all
-	staash = stash --include-untracked
-	stsh = stash --keep-index
-	merc = merge --no-ff
-	grog = log --graph --abbrev-commit --decorate --all --format=format:\"%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(dim white) - %an%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset)\"
-	update = remote -v update
-    aliases = !git config --get-regexp 'alias.*' | colrm 1 6 | sed 's/[ ]/ = /' | sort
-	unstage = reset --
-	pushf = push --force-with-lease
+  commend = commit --amend --no-edit
+  it = !git init && git commit -m “root” --allow-empty
+  staaash = stash --all
+  staash = stash --include-untracked
+  stsh = stash --keep-index
+  merc = merge --no-ff
+  grog = log --graph --abbrev-commit --decorate --all --format=format:\"%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(dim white) - %an%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset)\"
+  update = remote -v update
+  aliases = !git config --get-regexp 'alias.*' | colrm 1 6 | sed 's/[ ]/ = /' | sort
+  unstage = reset --
+  pushf = push --force-with-lease
 [user]
-	email = jetrussell93@gmail.com
-	name = Jake
+  email = jetrussell93@gmail.com
+  name = Jake
 [core]
-	editor = vim
-	excludesfile = /Users/munsterberg/.gitignore
+  editor = vim
+  excludesfile = /Users/munsterberg/.gitignore
