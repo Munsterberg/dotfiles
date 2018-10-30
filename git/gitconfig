@@ -8,6 +8,8 @@
   cm = !git add -A && git commit -m
   save = !git add -A && git commit -m 'SAVEPOINT'
   undo = reset HEAD~1 --mixed
+  rbc = rebase --continue
+  copysha = !git rev-parse HEAD | pbcopy
   amend = commit -a --amend
   wipe = !git add -A && git commit -qm 'WIPE SAVEPOINT' && git reset HEAD~1 --hard
   ignore=!([ ! -e .gitignore ] && touch .gitignore) | echo $1 >>.gitignore
