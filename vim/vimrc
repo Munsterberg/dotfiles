@@ -7,17 +7,16 @@ set clipboard=unnamed
 " Plugins will be downloaded under the specified directory.
 call plug#begin('~/.vim/plugged')
 
-" Declare the list of plugins.  " Color scheme plugins
+" Declare the list of plugins.
+" Color scheme plugins
 Plug 'morhetz/gruvbox'
 
 " == General editor plugins ==
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
-"Plug 'scrooloose/nerdtree'
-"Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
-Plug 'scrooloose/nerdcommenter'
+Plug 'tomtom/tcomment_vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'bling/vim-airline'
@@ -30,6 +29,7 @@ Plug 'jiangmiao/auto-pairs'
 
 " == Syntax ==
 Plug 'othree/html5.vim'
+Plug 'jparise/vim-graphql'
 
 " == JavaScript syntax highlighting ==
 Plug 'othree/yajs.vim'
@@ -38,7 +38,6 @@ Plug 'mxw/vim-jsx', {'for': ['jsx', 'javascript.jsx']}
 Plug 'othree/javascript-libraries-syntax.vim'
 Plug 'pangloss/vim-javascript', {'for': ['javascript.jsx', 'javascript']}
 Plug 'leafgarland/typescript-vim'
-
 
 " == SCSS and CSS syntax highlighting ==
 Plug 'JulesWang/css.vim'
@@ -76,33 +75,13 @@ let g:ale_linters = {
 "" == mxw/vim-jsx ==
 let g:jsx_ext_required = 0
 
-"" == scrooloose/nerdtree ==
-"nnoremap <C-n> :NERDTreeToggle<CR>
-"inoremap <C-n> <ESC>:NERDTreeToggle<CR>
-"let NERDTreeShowHidden=1 " Show hidden files by default
-"let NERDTreeQuitOnOpen=0
-"let NERDTreeIgnore=['\.pyc$', '\~$']
-"let NERDTreeMinimalUI=1
-"let NERDTreeDirArrows = 1
-"let g:NERDTreeWinSize=35
-"let g:NERDTreeChDirMode=2
-"autocmd StdinReadPre * let s:std_in=1
-"autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-
-"" == scrooloose/nerdcommenter ==
-" Add spaces after comment delimiters by default
-let g:NERDSpaceDelims = 1
-" Use compact syntax for prettified multi-line comments
-let g:NERDCompactSexyComs = 1
-" Align line-wise comment delimiters flush left instead of following code indentation
-let g:NERDDefaultAlign = 'left'
-
 "" == mattn/emmet-vim ==
 let g:user_emmet_settings = {
 \  'javascript' : {
 \      'extends' : 'jsx',
 \   },
 \}
+let g:user_emmet_leader_key='<C-e>'
 
 " == ctrlpvim/ctrlp.vim ==
 let g:ctrlp_working_path_mode = 'rw'
@@ -138,8 +117,6 @@ nmap <leader>s :split <C-R>=escape(expand("%:p:h"), '') . '/'<cr>
 nmap <leader>v :vnew <C-R>=escape(expand("%:p:h"), '') . '/'<cr>
 " Remove all trailing whitespace by pressing F5
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
-" Bind emmet completion to hh
-imap hh <C-y>,
 " turn off search highlight
 nnoremap <leader><space> :nohlsearch<CR>
 
@@ -151,22 +128,34 @@ colorscheme gruvbox
 
 " == GENERAL SETTINGS ==
 " SETTINGS
-syntax enable " enable syntax
+if has("gui_running")
+  let s:uname = system("uname")
+  if s:uname == "Darwin\n"
+    set guifont=Inconsolata\ for\ Powerline:h15
+  endif
+endif
+" syntax enable " enable syntax
 let python_highlight_all=1
 set encoding=utf-8
 set background=dark
 set backspace=2
 set ruler
 set linebreak
-set guifont=Hack:h16
+set guifont=Inconsolata\ for\ Powerline:h20
 "set macligatures
 set tabstop=2 " set tab to 4
 set visualbell
 set ttyfast
+set gdefault
+set splitright " open split on right not left
+set splitbelow " open split below not above
+set noswapfile
+set wildmenu
+set wildmode=longest:full,full
 set softtabstop=2 " set editor tab to 4
 set shiftwidth=2 " for indent options on text i.e. >>
 set expandtab " set tabs to spaces
-set number relativenumber " show line numbers
+set number " show line numbers
 set numberwidth=5
 set showcmd " show command at bottom
 set cursorline " highlight current line
