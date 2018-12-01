@@ -169,6 +169,7 @@ set textwidth=100
 set formatoptions=qrn1
 set wrapmargin=0
 set noswapfile
+set nobackup
 set colorcolumn=+1
 set foldmethod=indent
 set foldlevel=99
