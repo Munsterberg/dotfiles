@@ -14,13 +14,16 @@ Plug 'morhetz/gruvbox'
 " == General editor plugins ==
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-vinegar'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'tomtom/tcomment_vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'bling/vim-airline'
-Plug 'ctrlpvim/ctrlp.vim'
+
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
 
 " Autocomplete plugins
 Plug 'ervandew/supertab'
@@ -28,27 +31,19 @@ Plug 'mattn/emmet-vim', {'for': ['javascript.jsx', 'html', 'css']}
 Plug 'jiangmiao/auto-pairs'
 
 " == Syntax ==
+Plug 'sheerun/vim-polyglot'
 Plug 'othree/html5.vim'
 Plug 'jparise/vim-graphql'
 
 " == JavaScript syntax highlighting ==
-Plug 'othree/yajs.vim'
-Plug 'moll/vim-node', {'for': 'javascript'}
-Plug 'mxw/vim-jsx', {'for': ['jsx', 'javascript.jsx']}
-Plug 'othree/javascript-libraries-syntax.vim'
-Plug 'pangloss/vim-javascript', {'for': ['javascript.jsx', 'javascript']}
 Plug 'leafgarland/typescript-vim'
-
-" == SCSS and CSS syntax highlighting ==
-Plug 'JulesWang/css.vim'
-Plug 'cakebaker/scss-syntax.vim'
 
 " == Linting ==
 Plug 'w0rp/ale'
 Plug 'prettier/vim-prettier'
 
 " == Python ==
-Plug 'Vimjas/vim-python-pep8-indent'
+" Plug 'Vimjas/vim-python-pep8-indent'
 Plug 'ambv/black'
 
 " List ends here. Plugins become visible to Vim after this call.
@@ -72,8 +67,20 @@ let g:ale_linters = {
 \   'python': ['flake8', 'mypy']
 \}
 
+"" == junegunn/fzf.vim ==
+nnoremap <c-p> :FZF<cr>
+augroup fzf
+  autocmd!
+  autocmd! FileType fzf
+  autocmd  FileType fzf set laststatus=0 noshowmode noruler
+    \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+augroup END
+
 "" == mxw/vim-jsx ==
 let g:jsx_ext_required = 0
+
+"" == sheerun/vim-polyglot
+let g:javascript_plugin_jsdoc = 1
 
 "" == mattn/emmet-vim ==
 let g:user_emmet_settings = {
@@ -82,11 +89,6 @@ let g:user_emmet_settings = {
 \   },
 \}
 let g:user_emmet_leader_key='<C-e>'
-
-" == ctrlpvim/ctrlp.vim ==
-let g:ctrlp_working_path_mode = 'rw'
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
-let g:ctrlp_show_hidden = 1
 
 " == Airline ==
 let g:airline#extensions#tabline#enabled = 1
@@ -175,12 +177,12 @@ set foldmethod=indent
 set foldlevel=99
 
 " FUNCTIONS
-fun! <SID>StripTrailingWhitespaces()
+function! <SID>StripTrailingWhitespaces()
     let l = line(".")
     let c = col(".")
     %s/\s\+$//e
     call cursor(l, c)
-endfun
+endfunction
 
 function! TrimEndLinesMain()
     let save_cursor = getpos(".")
@@ -196,6 +198,8 @@ function! DeleteHiddenBuffers()
     endfor
 endfunction
 cabbrev dhb call DeleteHiddenBuffers()
+nnoremap <leader>t :call DeleteHiddenBuffers()<CR>
+
 
 autocmd Filetype help nmap <buffer>q :q<cr>
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
@@ -205,3 +209,4 @@ autocmd BufNewFile,BufRead *.py setlocal ts=4 sw=4 sts=4 ai fileformat=unix
 " Python Black formatting
 autocmd BufWritePre *.py execute ':Black'
 autocmd BufNewFile,BufRead *.c  setlocal ts=4 sw=4 sts=4 ai fileformat=unix
+autocmd BufNewFile,BufRead *.go setlocal ts=4 sw=4 sts=4 ai noet fileformat=unix
