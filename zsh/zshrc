@@ -1,5 +1,7 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=/bin:/usr/bin:/usr/local/bin:${PATH}
+
 
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/munsterberg/.oh-my-zsh"
@@ -107,8 +109,9 @@ source $HOME/.aliases
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-export PATH="/usr/local/sbin:$PATH"
+
+# export PATH="/usr/local/sbin:$PATH"
 export NVM_DIR="/Users/munsterberg/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-export GOPATH=$HOME/Sites/go_workspace
-export GOBIN=$HOME/Sites/go_workspace/bin
+export GOPATH=$HOME/code/go_workspace
+export GOBIN=$HOME/code/go_workspace/bin
