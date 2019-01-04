@@ -110,8 +110,16 @@ source $HOME/.aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+if [ -f ~/.aliases ]; then
+  . ~/.aliases
+fi
+
 # export PATH="/usr/local/sbin:$PATH"
 export NVM_DIR="/Users/munsterberg/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 export GOPATH=$HOME/code/go_workspace
 export GOBIN=$HOME/code/go_workspace/bin
+export PATH="/usr/local/sbin:$PATH"
+export PATH="/usr/local/bin:$PATH"
+export PATH="/usr/local/bin:$PATH"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

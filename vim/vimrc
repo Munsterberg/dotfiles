@@ -122,6 +122,9 @@ nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 " turn off search highlight
 nnoremap <leader><space> :nohlsearch<CR>
 
+" ctags
+command! MakeTags !ctags -R --exclude=.git --exclude=node_modules --exclude=test .
+
 " listen to me vim
 command! Q q
 
