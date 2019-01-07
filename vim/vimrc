@@ -13,6 +13,7 @@ Plug 'morhetz/gruvbox'
 
 " == General editor plugins ==
 Plug 'tpope/vim-surround'
+Plug 'romainl/vim-cool'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
 Plug 'airblade/vim-gitgutter'
@@ -56,6 +57,9 @@ let g:prettier#autoformat = 0
 " autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue Prettier
 
 let g:SuperTabDefaultCompletionType = "<c-n>"
+
+" == tpope/vim-cool ==
+let g:CoolTotalMatches = 1
 
 "" == w0rp/ale ==
 let g:ale_sign_error = '●'
