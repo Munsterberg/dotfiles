@@ -183,6 +183,11 @@ set colorcolumn=+1
 set foldmethod=indent
 set foldlevel=99
 
+" SNIPPETS
+nnoremap <leader>html :-1read $HOME/.vim/snippets/.skeleton.html<CR>7ji
+nnoremap <leader>crc :-1read $HOME/.vim/snippets/.crc.js<CR>4jwwli
+nnoremap <leader>fsc :-1read $HOME/.vim/snippets/.fsc.js<CR>3ji
+
 " FUNCTIONS
 function! <SID>StripTrailingWhitespaces()
     let l = line(".")
