@@ -4,4 +4,4 @@ const Default = () => (
 
 );
 
-export Default;
+export default Default;

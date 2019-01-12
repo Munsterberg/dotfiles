@@ -126,6 +126,12 @@ nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 " turn off search highlight
 nnoremap <leader><space> :nohlsearch<CR>
 
+" js console logs
+nmap cll yiwoconsole.log({ })<Esc>0f{<space>p
+nmap cle yiwoconsole.error({ })<Esc>0f{<space>p
+nmap cli yiwoconsole.info({ })<Esc>0f{<space>p
+nmap clw yiwoconsole.warning({ })<Esc>0f{<space>p
+
 " ctags
 command! MakeTags !ctags -R --exclude=.git --exclude=node_modules --exclude=test .
 
