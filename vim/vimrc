@@ -13,7 +13,6 @@ Plug 'morhetz/gruvbox'
 
 " == General editor plugins ==
 Plug 'tpope/vim-surround'
-Plug 'romainl/vim-cool'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-vinegar'
 Plug 'airblade/vim-gitgutter'
@@ -23,6 +22,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'bling/vim-airline'
 
+" fuzzy file finder
 Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 
@@ -125,12 +125,6 @@ nmap <leader>v :vnew <C-R>=escape(expand("%:p:h"), '') . '/'<cr>
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 " turn off search highlight
 nnoremap <leader><space> :nohlsearch<CR>
-
-" js console logs
-nmap cll yiwoconsole.log({ })<Esc>0f{<space>p
-nmap cle yiwoconsole.error({ })<Esc>0f{<space>p
-nmap cli yiwoconsole.info({ })<Esc>0f{<space>p
-nmap clw yiwoconsole.warning({ })<Esc>0f{<space>p
 
 " ctags
 command! MakeTags !ctags -R --exclude=.git --exclude=node_modules --exclude=test .
