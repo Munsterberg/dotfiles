@@ -8,6 +8,7 @@
   cm = !git add -A && git commit -m
   save = !git add -A && git commit -m 'SAVEPOINT'
   undo = reset HEAD~1 --mixed
+  rst = rebase --autostash
   rbc = rebase --continue
   rba = rebase --abort
   copysha = !git rev-parse HEAD | pbcopy
