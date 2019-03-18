@@ -38,7 +38,7 @@ Plug 'jparise/vim-graphql'
 
 " == JavaScript syntax highlighting ==
 Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
+Plug 'peitalin/vim-jsx-typescript', { 'for': 'typescript.jsx'  }
 
 " == Linting ==
 Plug 'w0rp/ale'

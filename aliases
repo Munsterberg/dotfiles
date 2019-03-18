@@ -2,6 +2,6 @@ alias tmux="TERM=screen-256color tmux"
 alias vim="mvim -v"
 alias pg-start="launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
 alias pg-stop="launchctl unload ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist"
-alias brewup="brew update; brew upgrade; brew prune; brew cleanup; brew doctor"
+alias brewup="brew update; brew upgrade; brew cleanup --prune-prefix; brew doctor"
 alias python=python3
 alias pip=pip3
