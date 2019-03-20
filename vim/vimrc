@@ -127,6 +127,9 @@ nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 " turn off search highlight
 nnoremap <leader><space> :nohlsearch<CR>
 
+" :w!! to save with sudo
+ca w!! w !sudo tee >/dev/null "%"
+
 " ctags
 command! MakeTags !ctags -R --exclude=.git --exclude=node_modules --exclude=test .
 
