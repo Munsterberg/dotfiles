@@ -3,3 +3,4 @@
 *.swo
 .vscode
 tags
+.jira-url
