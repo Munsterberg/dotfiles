@@ -46,7 +46,6 @@ Plug 'prettier/vim-prettier'
 
 " == Python ==
 " Plug 'Vimjas/vim-python-pep8-indent'
-Plug 'ambv/black'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -98,10 +97,6 @@ let g:user_emmet_leader_key='<C-e>'
 " == Airline ==
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
-" let g:airline_left_sep = '⮀'
-" let g:airline_left_alt_sep = '⮁'
-" let g:airline_right_sep = '⮂'
-" let g:airline_right_alt_sep = '⮃'
 let g:airline_left_sep = '»'
 let g:airline_left_sep = '▶'
 let g:airline_right_sep = '«'
@@ -221,8 +216,8 @@ autocmd Filetype help nmap <buffer>q :q<cr>
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 autocmd BufWritePre * :call TrimEndLinesMain()
 " Python PEP8 indentation
-autocmd BufNewFile,BufRead *.py setlocal ts=4 sw=4 sts=4 ai fileformat=unix
-" Python Black formatting
-autocmd BufWritePre *.py execute ':Black'
+autocmd BufNewFile,BufRead *.py setlocal ts=4 sw=4 sts=4 ai fileformat=unix et tw=79
+" C formatting
 autocmd BufNewFile,BufRead *.c  setlocal ts=4 sw=4 sts=4 ai fileformat=unix
+" Go formatting
 autocmd BufNewFile,BufRead *.go setlocal ts=4 sw=4 sts=4 ai noet fileformat=unix
