@@ -86,6 +86,10 @@ source $HOME/.aliases
 
 # ssh
 # export SSH_KEY_PATH="~/.ssh/rsa_id"
+#
+# Linking support by default
+export LDFLAGS="-L/usr/local/opt/openssl/lib"
+export CPPFLAGS="-I/usr/local/opt/openssl/include"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
@@ -110,3 +114,5 @@ export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/bin:$PATH"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 export PATH="/usr/local/opt/openssl/bin:$PATH"
+BASE16_SHELL=$HOME/.config/base16-shell/
+[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"

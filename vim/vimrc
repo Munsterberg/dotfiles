@@ -10,6 +10,7 @@ call plug#begin('~/.vim/plugged')
 " Declare the list of plugins.
 " Color scheme plugins
 Plug 'morhetz/gruvbox'
+Plug 'chriskempson/base16-vim'
 
 " == General editor plugins ==
 Plug 'tpope/vim-surround'
@@ -133,7 +134,11 @@ command! MakeTags !ctags -R --exclude=.git --exclude=node_modules --exclude=test
 command! Q q
 
 " == COLOR SCHEME ==
-colorscheme gruvbox
+" colorscheme gruvbox
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif
 
 " == GENERAL SETTINGS ==
 " SETTINGS
