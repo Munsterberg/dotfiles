@@ -104,15 +104,18 @@ if [ -f ~/.aliases ]; then
   . ~/.aliases
 fi
 
-# export PATH="/usr/local/sbin:$PATH"
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
 export NVM_DIR="/Users/munsterberg/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-export GOPATH=$HOME/code/go_workspace
-export GOBIN=$HOME/code/go_workspace/bin
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/bin:$PATH"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export PATH="$PATH:/usr/local/go/bin"
 export PATH="/usr/local/opt/openssl/bin:$PATH"
+export GOPATH="$HOME/code/go_workspace"
+export GOROOT="/usr/local/opt/go/libexec"
+export GOBIN="$GOPATH/bin"
+export PATH="$PATH:$GOPATH"
+export PATH="$PATH:$GOBIN"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
