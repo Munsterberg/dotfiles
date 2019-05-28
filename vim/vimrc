@@ -60,10 +60,7 @@ call plug#end()
 let g:prettier#autoformat = 0
 " autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue Prettier
 
-let g:SuperTabDefaultCompletionType = "<c-n>"
-
-" == tpope/vim-cool ==
-let g:CoolTotalMatches = 1
+" let g:SuperTabDefaultCompletionType = "<c-n>"
 
 "" == w0rp/ale ==
 let g:ale_sign_error = '●'
@@ -71,7 +68,10 @@ let g:ale_lint_on_save = 1
 let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_enter = 0
 let g:ale_linters = {
-\   'python': ['flake8', 'pylint']
+\  'python': ['flake8', 'pylint'],
+\}
+let g:ale_fixers = {
+\  'python': ['black'],
 \}
 
 "" == python/black ==
@@ -125,10 +125,17 @@ nmap <leader>so :source $MYVIMRC<cr>
 nmap <leader>e :e <C-R>=escape(expand("%:p:h"), '') . '/'<cr>
 nmap <leader>s :split <C-R>=escape(expand("%:p:h"), '') . '/'<cr>
 nmap <leader>v :vnew <C-R>=escape(expand("%:p:h"), '') . '/'<cr>
+" Replace word under cursor
+nmap <leader>* :%s/\<<c-r><c-w>\>//g<left><left>
+" Move lines up and down
+nmap <leader>k :m-2<cr>==
+nmap <leader>j :m+<cr>==
+xnoremap <leader>k :m-2<cr>gv=gv
+xnoremap <leader>j :m'>+<cr>gv=gv
 " Remove all trailing whitespace by pressing F5
-nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
+nmap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 " turn off search highlight
-nnoremap <leader><space> :nohlsearch<CR>
+nmap <leader><space> :nohlsearch<CR>
 " navigate buffers
 map gn :bn<CR>
 map gp :bp<CR>
@@ -224,7 +231,7 @@ function! DeleteHiddenBuffers()
   endfor
 endfunction
 cabbrev dhb call DeleteHiddenBuffers()
-nnoremap <leader>t :call DeleteHiddenBuffers()<CR>
+nnoremap <leader>d :call DeleteHiddenBuffers()<CR>
 
 
 autocmd Filetype help nmap <buffer>q :q<cr>
