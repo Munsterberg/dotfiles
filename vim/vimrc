@@ -76,7 +76,7 @@ let g:ale_fixers = {
 
 "" == python/black ==
 let g:black_fast = 0
-let g:black_linelength = 88
+let g:black_linelength = 79
 let g:black_skip_string_normalization = 0
 let g:black_virtualenv = '/usr/local/bin/'
 
@@ -145,7 +145,7 @@ map gd :bd<CR>
 ca w!! w !sudo tee >/dev/null "%"
 
 " ctags
-command! MakeTags !ctags -R --exclude=.git --exclude=node_modules --exclude=test .
+command! MakeTags !ctags -R --exclude=.git --exclude=node_modules,deps --exclude=test .
 
 " listen to me vim
 command! Q q
