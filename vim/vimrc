@@ -29,9 +29,9 @@ Plug '/usr/local/opt/fzf'
 Plug 'junegunn/fzf.vim'
 
 " Autocomplete plugins
-Plug 'ervandew/supertab'
 Plug 'mattn/emmet-vim', {'for': ['javascript.jsx', 'html', 'css']}
 Plug 'jiangmiao/auto-pairs'
+Plug 'davidhalter/jedi-vim'
 Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
 
 " == Syntax ==
@@ -56,11 +56,8 @@ call plug#end()
 
 " === Plugin settings ===
 
-" Prettier
 let g:prettier#autoformat = 0
 " autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue Prettier
-
-" let g:SuperTabDefaultCompletionType = "<c-n>"
 
 "" == w0rp/ale ==
 let g:ale_sign_error = '●'
@@ -84,10 +81,10 @@ let g:black_virtualenv = '/usr/local/bin/'
 set rtp+=/usr/local/opt/fzf
 nnoremap <c-p> :FZF<cr>
 augroup fzf
-  autocmd!
-  autocmd! FileType fzf
-  autocmd  FileType fzf set laststatus=0 noshowmode noruler
-        \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+autocmd!
+autocmd! FileType fzf
+autocmd  FileType fzf set laststatus=0 noshowmode noruler
+      \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 augroup END
 
 "" == mxw/vim-jsx ==
@@ -96,10 +93,10 @@ let g:jsx_ext_required = 0
 
 "" == mattn/emmet-vim ==
 let g:user_emmet_settings = {
-      \  'javascript' : {
-      \      'extends' : 'jsx',
-      \   },
-      \}
+    \  'javascript' : {
+    \      'extend' : 'jsx',
+    \   },
+    \}
 let g:user_emmet_leader_key='<C-e>'
 
 " == Airline ==
@@ -137,9 +134,9 @@ nmap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 " turn off search highlight
 nmap <leader><space> :nohlsearch<CR>
 " navigate buffers
-map gn :bn<CR>
-map gp :bp<CR>
-map gd :bd<CR>
+map <leader>bn :bn<CR>
+map <leader>bp :bp<CR>
+map <leader>bd :bd<CR>
 
 " :w!! to save with sudo
 ca w!! w !sudo tee >/dev/null "%"
@@ -166,6 +163,7 @@ if has("gui_running")
 endif
 " syntax enable " enable syntax
 let python_highlight_all=1
+set hidden
 set encoding=utf-8
 set background=dark
 set backspace=2
@@ -180,7 +178,7 @@ set gdefault
 set splitright " open split on right not left
 set splitbelow " open split below not above
 set noswapfile
-set wildmenu
+" set wildmenu
 set wildmode=longest:full,full
 set softtabstop=2 " set editor tab to 4
 set shiftwidth=2 " for indent options on text i.e. >>
@@ -189,7 +187,6 @@ set number " show line numbers
 set numberwidth=5
 set showcmd " show command at bottom
 set cursorline " highlight current line
-set wildmenu " autocomplete for menu
 set lazyredraw " redraw less often
 set showmatch " highlight match
 set incsearch " search as characters are entered
@@ -200,9 +197,41 @@ set formatoptions=qrn1
 set wrapmargin=0
 set noswapfile
 set nobackup
+set nowritebackup
+set cmdheight=2
+set updatetime=300
+set shortmess+=c
+set signcolumn=yes
 set colorcolumn=+1
 set foldmethod=indent
 set foldlevel=99
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+" use <c-space> to trigger completion
+noremap <silent><expr> <c-space> coc#refresh()
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm."
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Use `[c` and `]c` to navigate diagnostics
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 " SNIPPETS
 nnoremap <leader>html :-1read $HOME/.vim/snippets/.skeleton.html<CR>7ji
@@ -210,6 +239,13 @@ nnoremap <leader>crc :-1read $HOME/.vim/snippets/.crc.js<CR>4jwwli
 nnoremap <leader>fsc :-1read $HOME/.vim/snippets/.fsc.js<CR>3ji
 
 " FUNCTIONS
+
+function! s:check_back_space() abort
+let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+
 function! <SID>StripTrailingWhitespaces()
   let l = line(".")
   let c = col(".")
@@ -231,7 +267,15 @@ function! DeleteHiddenBuffers()
   endfor
 endfunction
 cabbrev dhb call DeleteHiddenBuffers()
-nnoremap <leader>d :call DeleteHiddenBuffers()<CR>
+nnoremap <leader>bc :call DeleteHiddenBuffers()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
 
 
 autocmd Filetype help nmap <buffer>q :q<cr>
