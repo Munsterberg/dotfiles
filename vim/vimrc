@@ -44,6 +44,9 @@ Plug 'hail2u/vim-css3-syntax'
 " == JavaScript syntax highlighting ==
 Plug 'mxw/vim-jsx'
 
+" == Rails ==
+Plug 'tpope/vim-rails'
+
 " == Linting ==
 Plug 'w0rp/ale'
 Plug 'prettier/vim-prettier'

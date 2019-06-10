@@ -27,7 +27,7 @@
   pushf = push --force-with-lease
 [user]
   email = jetrussell93@gmail.com
-  name = Jake
+  name = munsterberg
 [core]
   editor = vim
   excludesfile = /Users/munsterberg/.gitignore
