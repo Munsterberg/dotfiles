@@ -1,5 +1,5 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+syntax on
+filetype plugin on                  " required
 let g:python_host_prog = '/usr/bin/python'
 let g:python3_host_prog = '/usr/local/bin/python3'
 set clipboard=unnamed
@@ -23,6 +23,7 @@ Plug 'tomtom/tcomment_vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'bling/vim-airline'
+Plug 'janko/vim-test'
 
 " fuzzy file finder
 Plug '/usr/local/opt/fzf'
@@ -54,10 +55,17 @@ Plug 'prettier/vim-prettier'
 " == Python ==
 Plug 'python/black'
 
+
+Plug 'vimwiki/vimwiki'
+
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
 
 " === Plugin settings ===
+
+" vimwiki
+let g:vimwiki_list = [{'path': '~/vimwiki/',
+      \ 'syntax': 'markdown', 'ext': '.md'}]
 
 let g:prettier#autoformat = 0
 " autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue Prettier
@@ -93,6 +101,13 @@ augroup END
 "" == mxw/vim-jsx ==
 let g:jsx_ext_required = 0
 
+"" == janko/vim-test
+" nmap <silent> t<C-n> :TestNearest<CR>
+" nmap <silent> t<C-f> :TestFile<CR>
+" nmap <silent> t<C-s> :TestSuite<CR>
+" nmap <silent> t<C-l> :TestLast<CR>
+" nmap <silent> t<C-g> :TestVisit<CR>
+
 
 "" == mattn/emmet-vim ==
 let g:user_emmet_settings = {
@@ -115,31 +130,31 @@ set t_Co=256
 " === Keybindings ===
 let mapleader = ","
 imap jk <Esc>
-nmap k gk
-nmap j gj
+nnoremap k gk
+nnoremap j gj
 " copy entire file to clipboard
-nmap <leader>co ggVG"*y
-nmap <leader>vr :tabe $MYVIMRC<cr>
-nmap <leader>so :source $MYVIMRC<cr>
+nnoremap <leader>co ggVG"*y
+nnoremap <leader>vr :tabe $MYVIMRC<cr>
+nnoremap <leader>so :source $MYVIMRC<cr>
 " Edit/split/create a file in the same dir as the current
-nmap <leader>e :e <C-R>=escape(expand("%:p:h"), '') . '/'<cr>
-nmap <leader>s :split <C-R>=escape(expand("%:p:h"), '') . '/'<cr>
-nmap <leader>v :vnew <C-R>=escape(expand("%:p:h"), '') . '/'<cr>
+nnoremap <leader>e :e <C-R>=escape(expand("%:p:h"), '') . '/'<cr>
+nnoremap <leader>s :split <C-R>=escape(expand("%:p:h"), '') . '/'<cr>
+nnoremap <leader>v :vnew <C-R>=escape(expand("%:p:h"), '') . '/'<cr>
 " Replace word under cursor
-nmap <leader>* :%s/\<<c-r><c-w>\>//g<left><left>
+nnoremap <leader>* :%s/\<<c-r><c-w>\>//g<left><left>
 " Move lines up and down
-nmap <leader>k :m-2<cr>==
-nmap <leader>j :m+<cr>==
+nnoremap <leader>k :m-2<cr>==
+nnoremap <leader>j :m+<cr>==
 xnoremap <leader>k :m-2<cr>gv=gv
 xnoremap <leader>j :m'>+<cr>gv=gv
 " Remove all trailing whitespace by pressing F5
-nmap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
+nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 " turn off search highlight
-nmap <leader><space> :nohlsearch<CR>
+nnoremap <leader><space> :nohlsearch<CR>
 " navigate buffers
-map <leader>bn :bn<CR>
-map <leader>bp :bp<CR>
-map <leader>bd :bd<CR>
+noremap <leader>bn :bn<CR>
+noremap <leader>bp :bp<CR>
+noremap <leader>bd :bd<CR>
 
 " :w!! to save with sudo
 ca w!! w !sudo tee >/dev/null "%"
@@ -218,14 +233,14 @@ inoremap <silent><expr> <TAB>
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 " use <c-space> to trigger completion
-noremap <silent><expr> <c-space> coc#refresh()
+inoremap <expr> <C-V> coc#refresh()
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm."
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
-" Use `[c` and `]c` to navigate diagnostics
-nmap <silent> [c <Plug>(coc-diagnostic-prev)
-nmap <silent> ]c <Plug>(coc-diagnostic-next)
+inoremap <expr> <C-J> pumvisible() ? "\<C-N>" : "j"
+inoremap <expr> <C-K> pumvisible() ? "\<C-P>" : "k"
+
 
 " Remap keys for gotos
 nmap <silent> gd <Plug>(coc-definition)
@@ -249,20 +264,20 @@ let col = col('.') - 1
 endfunction
 
 
-function! <SID>StripTrailingWhitespaces()
+function! <SID>StripTrailingWhitespaces() abort
   let l = line(".")
   let c = col(".")
   %s/\s\+$//e
   call cursor(l, c)
 endfunction
 
-function! TrimEndLinesMain()
+function! TrimEndLinesMain() abort
   let save_cursor = getpos(".")
   :silent! %s#\($\n\s*\)\+\%$##
   call setpos('.', save_cursor)
 endfunction
 
-function! DeleteHiddenBuffers()
+function! DeleteHiddenBuffers() abort
   let tpbl=[]
   call map(range(1, tabpagenr('$')), 'extend(tpbl, tabpagebuflist(v:val))')
   for buf in filter(range(1, bufnr('$')), 'bufexists(v:val) && index(tpbl, v:val)==-1')
@@ -272,7 +287,7 @@ endfunction
 cabbrev dhb call DeleteHiddenBuffers()
 nnoremap <leader>bc :call DeleteHiddenBuffers()<CR>
 
-function! s:show_documentation()
+function! s:show_documentation() abort
   if (index(['vim','help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
   else

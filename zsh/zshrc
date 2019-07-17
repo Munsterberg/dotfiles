@@ -105,6 +105,7 @@ if [ -f ~/.aliases ]; then
 fi
 
 export FZF_DEFAULT_COMMAND='rg --files --hidden'
+export FZF_DEFAULT_OPTS='--bind ctrl-j:down,ctrl-k:up'
 export NVM_DIR="/Users/munsterberg/.nvm"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/bin:$PATH"
