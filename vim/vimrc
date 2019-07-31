@@ -16,7 +16,6 @@ Plug 'vim-airline/vim-airline-themes'
 " == General editor plugins ==
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-vinegar'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'tomtom/tcomment_vim'
@@ -24,6 +23,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'bling/vim-airline'
 Plug 'janko/vim-test'
+Plug 'craigemery/vim-autotag'
 
 " fuzzy file finder
 Plug '/usr/local/opt/fzf'
@@ -256,6 +256,9 @@ nnoremap <leader>html :-1read $HOME/.vim/snippets/.skeleton.html<CR>7ji
 nnoremap <leader>crc :-1read $HOME/.vim/snippets/.crc.js<CR>4jwwli
 nnoremap <leader>fsc :-1read $HOME/.vim/snippets/.fsc.js<CR>3ji
 
+let g:netrw_banner = 0
+nnoremap - :Ex \| Explore <CR>
+
 " FUNCTIONS
 
 function! s:check_back_space() abort
@@ -305,3 +308,4 @@ autocmd BufWritePre *.py execute ':Black'
 autocmd BufNewFile,BufRead *.c  setlocal ts=4 sw=4 sts=4 ai fileformat=unix
 " Go formatting
 autocmd BufNewFile,BufRead *.go setlocal ts=4 sw=4 sts=4 ai noet fileformat=unix
+set tags=tags
