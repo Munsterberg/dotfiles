@@ -1,6 +1,6 @@
 syntax on
 filetype plugin on                  " required
-let g:python_host_prog = '/usr/bin/python'
+let g:python_host_prog = '/usr/local/bin/python'
 let g:python3_host_prog = '/usr/local/bin/python3'
 set clipboard=unnamed
 
@@ -44,9 +44,6 @@ Plug 'hail2u/vim-css3-syntax'
 
 " == JavaScript syntax highlighting ==
 Plug 'mxw/vim-jsx'
-
-" == Rails ==
-Plug 'tpope/vim-rails'
 
 " == Linting ==
 Plug 'w0rp/ale'
@@ -151,10 +148,6 @@ xnoremap <leader>j :m'>+<cr>gv=gv
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 " turn off search highlight
 nnoremap <leader><space> :nohlsearch<CR>
-" navigate buffers
-noremap <leader>bn :bn<CR>
-noremap <leader>bp :bp<CR>
-noremap <leader>bd :bd<CR>
 
 " :w!! to save with sudo
 ca w!! w !sudo tee >/dev/null "%"
@@ -287,7 +280,6 @@ function! DeleteHiddenBuffers() abort
     silent execute 'bwipeout' buf
   endfor
 endfunction
-cabbrev dhb call DeleteHiddenBuffers()
 nnoremap <leader>bc :call DeleteHiddenBuffers()<CR>
 
 function! s:show_documentation() abort
