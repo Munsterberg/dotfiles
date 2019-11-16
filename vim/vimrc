@@ -13,6 +13,7 @@ Plug 'morhetz/gruvbox'
 Plug 'chriskempson/base16-vim'
 
 " == General editor plugins ==
+Plug 'vimwiki/vimwiki'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'airblade/vim-gitgutter'
@@ -36,10 +37,10 @@ Plug 'othree/html5.vim'
 Plug 'jparise/vim-graphql'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main'  }
 Plug 'hail2u/vim-css3-syntax'
-Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 " == JavaScript syntax highlighting ==
+Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
 Plug 'pangloss/vim-javascript'
 Plug 'maxmellon/vim-jsx-pretty'
 
@@ -49,9 +50,6 @@ Plug 'prettier/vim-prettier'
 
 " == Python ==
 Plug 'python/black'
-
-
-Plug 'vimwiki/vimwiki'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -63,6 +61,7 @@ call plug#end()
 let g:vimwiki_list = [{'path': '~/vimwiki/',
       \ 'syntax': 'markdown', 'ext': '.md'}]
 
+" prettier
 let g:prettier#autoformat = 0
 " autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue Prettier
 
