@@ -11,7 +11,6 @@ call plug#begin('~/.vim/plugged')
 " Color scheme plugins
 Plug 'morhetz/gruvbox'
 Plug 'chriskempson/base16-vim'
-Plug 'vim-airline/vim-airline-themes'
 
 " == General editor plugins ==
 Plug 'tpope/vim-surround'
@@ -21,9 +20,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'tomtom/tcomment_vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'bling/vim-airline'
-Plug 'janko/vim-test'
 Plug 'craigemery/vim-autotag'
+Plug 'ap/vim-buftabline'
 
 " fuzzy file finder
 Plug '/usr/local/opt/fzf'
@@ -99,27 +97,29 @@ augroup END
 "" == mxw/vim-jsx ==
 let g:jsx_ext_required = 0
 
-"" == janko/vim-test
-" nmap <silent> t<C-n> :TestNearest<CR>
-" nmap <silent> t<C-f> :TestFile<CR>
-" nmap <silent> t<C-s> :TestSuite<CR>
-" nmap <silent> t<C-l> :TestLast<CR>
-" nmap <silent> t<C-g> :TestVisit<CR>
-
 " == fatih/vim-go ==
 " disable gd for :GoDef
 let g:go_def_mapping_enabled = 0
 
-" == Airline ==
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
-let g:airline_left_sep = '»'
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '«'
-let g:airline_right_sep = '◀'
-set laststatus=2
-set t_Co=256
-set statusline^=%{coc#status()}
+"" Status line
+set laststatus=2                                      " always show statusline
+set statusline=                                       " clear statusline
+set statusline+=%l                                    " current line number
+set statusline+=/%L                                   " total lines
+set statusline+=(%p%%)                                " percentage through the file
+set statusline+=%4c                                   " cursor column
+set statusline+=\|%-4{strwidth(getline('.'))}         " line length
+set statusline+=%{LinterStatus()}                     " ALE status
+set statusline+=%=                                    " left/right separator
+set statusline+=%{&buftype!='terminal'?expand('%:p:h:t').'\\'.expand('%:t'):expand('%')}  " dir\filename.ext
+set statusline+=%m                                    " modified flag
+set statusline+=%r                                    " read only flag
+set statusline+=%=                                    " left/right separator
+set statusline+=%{coc#status()}                       " coc statusline
+set statusline+=\ [%{strlen(&ft)?(&ft\ .\ \',\'):''}  " filetype
+set statusline+=%{strlen(&fenc)?(&fenc\ .\ \',\'):''} " file encoding
+set statusline+=%{&ff}]                               " line endings
+set statusline+=%<                                    " start to truncate here
 
 " === Keybindings ===
 let mapleader = ","
@@ -225,9 +225,9 @@ let g:coc_global_extensions = [
   \ 'coc-tsserver',
   \ 'coc-eslint',
   \ 'coc-prettier',
+  \ 'coc-python',
   \ 'coc-json',
   \ 'coc-elixir',
-  \ 'coc-python',
   \ ]
 
 " Use tab for trigger completion with characters ahead and navigate.
@@ -266,6 +266,17 @@ let g:netrw_banner = 0
 nnoremap - :Ex \| Explore <CR>
 
 " FUNCTIONS
+
+function! LinterStatus() abort
+   let l:counts = ale#statusline#Count(bufnr(''))
+   let l:all_errors = l:counts.error + l:counts.style_error
+   let l:all_non_errors = l:counts.total - l:all_errors
+   return l:counts.total == 0 ? '' : printf(
+   \ 'W:%d E:%d',
+   \ l:all_non_errors,
+   \ l:all_errors
+   \)
+endfunction
 
 function! s:check_back_space() abort
 let col = col('.') - 1
