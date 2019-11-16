@@ -192,8 +192,7 @@ set wildmode=longest:full,full
 set softtabstop=2 " set editor tab to 4
 set shiftwidth=2 " for indent options on text i.e. >>
 set expandtab " set tabs to spaces
-set number relativenumber " show line numbers
-set nu rnu
+set number " show line numbers
 set numberwidth=5
 set showcmd " show command at bottom
 set cursorline " highlight current line
