@@ -26,8 +26,16 @@
   unstage = reset --
   pushf = push --force-with-lease
 [user]
-  email = jetrussell93@gmail.com
-  name = munsterberg
+	email = jetrussell93@gmail.com
+	name = munsterberg
 [core]
   editor = vim
-  excludesfile = /Users/munsterberg/.gitignore
+	excludesfile = /Users/munsterberg/.gitignore
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true
+[commit]
+	template = /Users/munsterberg/.stCommitMsg

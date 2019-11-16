@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Default = () => (
-
-);
+function Default() {
+  return ();
+}
 
 export default Default;
