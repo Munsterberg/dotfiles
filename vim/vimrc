@@ -23,6 +23,7 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'craigemery/vim-autotag'
 Plug 'ap/vim-buftabline'
+Plug 'janko/vim-test'
 
 " fuzzy file finder
 Plug '/usr/local/opt/fzf'
