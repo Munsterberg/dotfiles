@@ -20,7 +20,7 @@
   stsh = stash --keep-index
   merc = merge --no-ff
   grog = log --graph --abbrev-commit --decorate --all --format=format:\"%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(dim white) - %an%C(reset) %C(bold green)(%ar)%C(reset)%C(bold yellow)%d%C(reset)%n %C(white)%s%C(reset)\"
-  olog = log --oneline
+  olog = log --pretty=format:\"%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s'\" --date=short
   update = remote -v update
   aliases = !git config --get-regexp 'alias.*' | colrm 1 6 | sed 's/[ ]/ = /' | sort
   unstage = reset --
@@ -33,7 +33,7 @@
 	excludesfile = /Users/munsterberg/.gitignore
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
+	path =
 [mergetool "sourcetree"]
 	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
