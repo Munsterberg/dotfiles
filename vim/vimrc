@@ -24,6 +24,7 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'craigemery/vim-autotag'
 Plug 'ap/vim-buftabline'
 Plug 'janko/vim-test'
+Plug 'wakatime/vim-wakatime'
 
 " fuzzy file finder
 Plug '/usr/local/opt/fzf'
@@ -212,7 +213,7 @@ set updatetime=300
 set shortmess+=c
 set signcolumn=yes
 set colorcolumn=+1
-set foldmethod=indent
+set foldmethod=syntax
 set foldlevel=99
 
 "-----------------"
@@ -227,7 +228,6 @@ let g:coc_global_extensions = [
   \ 'coc-prettier',
   \ 'coc-python',
   \ 'coc-json',
-  \ 'coc-elixir',
   \ ]
 
 " Use tab for trigger completion with characters ahead and navigate.
