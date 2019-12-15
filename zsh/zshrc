@@ -129,9 +129,10 @@ BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 
 #####
-
 export PATH="/usr/local/opt/openssl/bin:$PATH"
 export PATH="$PATH:/Users/munsterberg/.local/bin"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/bin:$PATH"
 export PATH="/usr/local/share/npm/bin:$PATH"
+
+eval "$(rbenv init -)"

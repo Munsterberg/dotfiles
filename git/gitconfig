@@ -29,7 +29,7 @@
 	email = jetrussell93@gmail.com
 	name = munsterberg
 [core]
-  editor = vim
+	editor = /usr/local/bin/nvim
 	excludesfile = /Users/munsterberg/.gitignore
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"

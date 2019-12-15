@@ -7,3 +7,4 @@ alias python=python3
 alias pip=pip3
 alias ctags="`brew --prefix`/bin/ctags"
 alias poetry_shell='. "$(dirname $(poetry run which python))/activate"'
+alias vactivate="source venv/bin/activate"

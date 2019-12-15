@@ -45,6 +45,7 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
 Plug 'pangloss/vim-javascript'
 Plug 'maxmellon/vim-jsx-pretty'
+Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 
 " == Linting ==
 Plug 'w0rp/ale'
@@ -228,6 +229,7 @@ let g:coc_global_extensions = [
   \ 'coc-prettier',
   \ 'coc-python',
   \ 'coc-json',
+  \ 'coc-solargraph',
   \ ]
 
 " Use tab for trigger completion with characters ahead and navigate.
