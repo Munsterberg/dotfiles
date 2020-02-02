@@ -1,4 +1,4 @@
-syntax on
+syntax on "required for polyglot
 filetype plugin on                  " required
 let g:python_host_prog = '/usr/local/bin/python'
 let g:python3_host_prog = '/usr/local/bin/python3'
@@ -13,7 +13,6 @@ Plug 'morhetz/gruvbox'
 Plug 'chriskempson/base16-vim'
 
 " == General editor plugins ==
-Plug 'vimwiki/vimwiki'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'airblade/vim-gitgutter'
@@ -35,17 +34,8 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " == Syntax ==
 Plug 'sheerun/vim-polyglot'
-Plug 'othree/html5.vim'
-Plug 'jparise/vim-graphql'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main'  }
-Plug 'hail2u/vim-css3-syntax'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-
-" == JavaScript syntax highlighting ==
-Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
-Plug 'pangloss/vim-javascript'
-Plug 'maxmellon/vim-jsx-pretty'
-Plug 'numirias/semshi', {'do': ':UpdateRemotePlugins'}
 
 " == Linting ==
 Plug 'w0rp/ale'
@@ -58,12 +48,6 @@ Plug 'python/black'
 call plug#end()
 
 " === Plugin settings ===
-
-
-" vimwiki
-let g:vimwiki_list = [{'path': '~/vimwiki/',
-      \ 'syntax': 'markdown', 'ext': '.md'}]
-
 " prettier
 let g:prettier#autoformat = 0
 " autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue Prettier
@@ -82,7 +66,7 @@ let g:ale_fixers = {
 
 "" == python/black ==
 let g:black_fast = 0
-let g:black_linelength = 79
+let g:black_linelength = 88
 let g:black_skip_string_normalization = 0
 let g:black_virtualenv = '/usr/local/bin/'
 
@@ -95,9 +79,6 @@ autocmd! FileType fzf
 autocmd  FileType fzf set laststatus=0 noshowmode noruler
       \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 augroup END
-
-"" == mxw/vim-jsx ==
-let g:jsx_ext_required = 0
 
 " == fatih/vim-go ==
 " disable gd for :GoDef
@@ -148,6 +129,12 @@ nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 " turn off search highlight
 nnoremap <leader><space> :nohlsearch<CR>
 
+" allows for CTRL-o to enter normal mode
+" only really useful for vim test with nvim
+if has('nvim')
+  tmap <C-o> <C-\><C-n>
+endif
+
 " :w!! to save with sudo
 ca w!! w !sudo tee >/dev/null "%"
 
@@ -171,7 +158,6 @@ if has("gui_running")
     set guifont=Inconsolata\ for\ Powerline:h15
   endif
 endif
-" syntax enable " enable syntax
 let g:netrw_localrmdir='rm -rf' " allow netrw rmdir to delete directories containing files
 let python_highlight_all=1
 set hidden
@@ -181,7 +167,6 @@ set backspace=2
 set ruler
 set linebreak
 set guifont=Inconsolata\ for\ Powerline:h20
-"set macligatures
 set tabstop=2 " set tab to 4
 set visualbell
 set ttyfast
@@ -189,7 +174,7 @@ set gdefault
 set splitright " open split on right not left
 set splitbelow " open split below not above
 set noswapfile
-" set wildmenu
+set wildmenu
 set wildmode=longest:full,full
 set softtabstop=2 " set editor tab to 4
 set shiftwidth=2 " for indent options on text i.e. >>
@@ -202,7 +187,7 @@ set lazyredraw " redraw less often
 set showmatch " highlight match
 set incsearch " search as characters are entered
 set hlsearch " hightlight matches
-set list listchars=tab:»\ ,trail:·,extends:>,precedes:<,space:␣
+set list listchars=tab:»\ ,trail:·,extends:>,precedes:<
 set textwidth=100
 set formatoptions=qrn1
 set wrapmargin=0
@@ -229,7 +214,6 @@ let g:coc_global_extensions = [
   \ 'coc-prettier',
   \ 'coc-python',
   \ 'coc-json',
-  \ 'coc-solargraph',
   \ ]
 
 " Use tab for trigger completion with characters ahead and navigate.
@@ -316,6 +300,26 @@ function! s:show_documentation() abort
   endif
 endfunction
 
+command! -nargs=* Zet call ZettelEdit(<f-args>)
+
+function! ZettelEdit(...)
+  " build the file name
+  let l:sep = ''
+  if len(a:000) > 0
+    let l:sep = '-'
+  endif
+  let l:fname = expand('~/wiki/') . strftime("%F-%H%M") . l:sep . join(a:000, '-') . '.md'
+
+  " edit the new file
+  exec "e " . l:fname
+
+  " enter the title and timestamp (using ultisnips) in the new file
+  if len(a:000) > 0
+    exec "normal ggO\<c-r>=strftime('%Y-%m-%d %H:%M')\<cr> " . join(a:000) . "\<cr>\<esc>G"
+  else
+    exec "normal ggO\<c-r>=strftime('%Y-%m-%d %H:%M')\<cr>\<cr>\<esc>G"
+  endif
+endfunction
 
 autocmd Filetype help nmap <buffer>q :q<cr>
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
