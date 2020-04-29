@@ -1,6 +1,6 @@
 syntax on "required for polyglot
 filetype plugin on                  " required
-let g:python_host_prog = '/usr/local/bin/python'
+let g:python_host_prog = '/usr/local/bin/python2'
 let g:python3_host_prog = '/usr/local/bin/python3'
 set clipboard=unnamed
 
@@ -9,8 +9,11 @@ call plug#begin('~/.vim/plugged')
 
 " Declare the list of plugins.
 " Color scheme plugins
-Plug 'morhetz/gruvbox'
+" Plug 'morhetz/gruvbox'
+" Plug 'arcticicestudio/nord-vim'
+" Plug 'flazz/vim-colorschemes'
 Plug 'chriskempson/base16-vim'
+
 
 " == General editor plugins ==
 Plug 'tpope/vim-surround'
@@ -20,7 +23,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tomtom/tcomment_vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'editorconfig/editorconfig-vim'
-Plug 'craigemery/vim-autotag'
+" Plug 'craigemery/vim-autotag'
 Plug 'ap/vim-buftabline'
 Plug 'janko/vim-test'
 Plug 'wakatime/vim-wakatime'
@@ -33,16 +36,20 @@ Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " == Syntax ==
-Plug 'sheerun/vim-polyglot'
+" Plug 'sheerun/vim-polyglot'
+Plug 'yuezk/vim-js'
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+Plug 'maxmellon/vim-jsx-pretty'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main'  }
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 " == Linting ==
-Plug 'w0rp/ale'
+" Plug 'w0rp/ale'
 Plug 'prettier/vim-prettier'
 
 " == Python ==
-Plug 'python/black'
+" Plug 'python/black'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -53,23 +60,26 @@ let g:prettier#autoformat = 0
 " autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue Prettier
 
 "" == w0rp/ale ==
-let g:ale_sign_error = '●'
-let g:ale_lint_on_save = 1
-let g:ale_lint_on_text_changed = 0
-let g:ale_lint_on_enter = 0
-let g:ale_linters = {
-\  'python': ['flake8', 'pylint'],
-\}
-let g:ale_fixers = {
-\  'python': ['black'],
-\}
+" let g:ale_sign_error = '●'
+" let g:ale_lint_on_save = 1
+" let g:ale_lint_on_text_changed = 0
+" let g:ale_lint_on_enter = 0
+" let g:ale_linters = {
+" \  'python': ['flake8', 'pylint'],
+" \}
+" let g:ale_fixers = {
+" \  'python': ['black'],
+" \}
+
+" typescript syntax disable indenting for CoC to handle
+let g:typescript_indent_disable = 1
 
 "" == python/black ==
-let g:black_fast = 0
-let g:black_linelength = 88
-let g:black_skip_string_normalization = 0
-let g:black_virtualenv = '/usr/local/bin/'
-
+" let g:black_fast = 0
+" let g:black_linelength = 88
+" let g:black_skip_string_normalization = 0
+" let g:black_virtualenv = '/usr/local/bin/'
+"
 "" == junegunn/fzf.vim ==
 set rtp+=/usr/local/opt/fzf
 nnoremap <c-p> :FZF<cr>
@@ -92,7 +102,7 @@ set statusline+=/%L                                   " total lines
 set statusline+=(%p%%)                                " percentage through the file
 set statusline+=%4c                                   " cursor column
 set statusline+=\|%-4{strwidth(getline('.'))}         " line length
-set statusline+=%{LinterStatus()}                     " ALE status
+" set statusline+=%{LinterStatus()}                     " ALE status
 set statusline+=%=                                    " left/right separator
 set statusline+=%{&buftype!='terminal'?expand('%:p:h:t').'\\'.expand('%:t'):expand('%')}  " dir\filename.ext
 set statusline+=%m                                    " modified flag
@@ -148,7 +158,8 @@ command! Q q
 set rtp+=$GOPATH/src/golang.org/x/lint/misc/vim
 
 " == COLOR SCHEME ==
-colorscheme gruvbox
+let base16colorspace=256
+colorscheme base16-horizon-dark
 
 " == GENERAL SETTINGS ==
 " SETTINGS
@@ -160,6 +171,7 @@ if has("gui_running")
 endif
 let g:netrw_localrmdir='rm -rf' " allow netrw rmdir to delete directories containing files
 let python_highlight_all=1
+set termguicolors
 set hidden
 set encoding=utf-8
 set background=dark
@@ -167,7 +179,7 @@ set backspace=2
 set ruler
 set linebreak
 set guifont=Inconsolata\ for\ Powerline:h20
-set tabstop=2 " set tab to 4
+set tabstop=2 " set tab to 2
 set visualbell
 set ttyfast
 set gdefault
@@ -176,8 +188,9 @@ set splitbelow " open split below not above
 set noswapfile
 set wildmenu
 set wildmode=longest:full,full
-set softtabstop=2 " set editor tab to 4
+set softtabstop=2 " set editor tab to 2
 set shiftwidth=2 " for indent options on text i.e. >>
+set smarttab
 set expandtab " set tabs to spaces
 set number " show line numbers
 set numberwidth=5
@@ -253,16 +266,16 @@ nnoremap - :Ex \| Explore <CR>
 
 " FUNCTIONS
 
-function! LinterStatus() abort
-   let l:counts = ale#statusline#Count(bufnr(''))
-   let l:all_errors = l:counts.error + l:counts.style_error
-   let l:all_non_errors = l:counts.total - l:all_errors
-   return l:counts.total == 0 ? '' : printf(
-   \ 'W:%d E:%d',
-   \ l:all_non_errors,
-   \ l:all_errors
-   \)
-endfunction
+" function! LinterStatus() abort
+"    let l:counts = ale#statusline#Count(bufnr(''))
+"    let l:all_errors = l:counts.error + l:counts.style_error
+"    let l:all_non_errors = l:counts.total - l:all_errors
+"    return l:counts.total == 0 ? '' : printf(
+"    \ 'W:%d E:%d',
+"    \ l:all_non_errors,
+"    \ l:all_errors
+"    \)
+" endfunction
 
 function! s:check_back_space() abort
 let col = col('.') - 1
@@ -325,9 +338,11 @@ autocmd Filetype help nmap <buffer>q :q<cr>
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 autocmd BufWritePre * :call TrimEndLinesMain()
 " Python black formatting
-autocmd BufWritePre *.py execute ':Black'
+" autocmd BufWritePre *.py execute ':Black'
 " C formatting
 autocmd BufNewFile,BufRead *.c  setlocal ts=4 sw=4 sts=4 ai fileformat=unix
+" tsx and jsx highlighting
+autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
 " Go formatting
 autocmd BufNewFile,BufRead *.go setlocal ts=4 sw=4 sts=4 ai noet fileformat=unix
 set tags=tags
