@@ -23,7 +23,6 @@ Plug 'tpope/vim-fugitive'
 Plug 'tomtom/tcomment_vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'editorconfig/editorconfig-vim'
-" Plug 'craigemery/vim-autotag'
 Plug 'ap/vim-buftabline'
 Plug 'janko/vim-test'
 Plug 'wakatime/vim-wakatime'
@@ -36,20 +35,12 @@ Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " == Syntax ==
-" Plug 'sheerun/vim-polyglot'
-Plug 'yuezk/vim-js'
-Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
-Plug 'maxmellon/vim-jsx-pretty'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main'  }
+Plug 'sheerun/vim-polyglot'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 " == Linting ==
-" Plug 'w0rp/ale'
 Plug 'prettier/vim-prettier'
-
-" == Python ==
-" Plug 'python/black'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -342,7 +333,7 @@ autocmd BufWritePre * :call TrimEndLinesMain()
 " C formatting
 autocmd BufNewFile,BufRead *.c  setlocal ts=4 sw=4 sts=4 ai fileformat=unix
 " tsx and jsx highlighting
-autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
+" autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
 " Go formatting
 autocmd BufNewFile,BufRead *.go setlocal ts=4 sw=4 sts=4 ai noet fileformat=unix
 set tags=tags
