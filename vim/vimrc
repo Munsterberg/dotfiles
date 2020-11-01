@@ -1,4 +1,4 @@
-syntax on "required for polyglot
+syntax off "required for polyglot
 filetype plugin on                  " required
 let g:python_host_prog = '/usr/local/bin/python2'
 let g:python3_host_prog = '/usr/local/bin/python3'
@@ -36,31 +36,44 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " == Syntax ==
 Plug 'styled-components/vim-styled-components', { 'branch': 'main'  }
-Plug 'sheerun/vim-polyglot'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" Plug 'sheerun/vim-polyglot'
+" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'pangloss/vim-javascript'
+Plug 'herringtondarkholme/yats.vim'
+Plug 'leafgarland/typescript-vim'
+Plug 'maxmellon/vim-jsx-pretty'   " JS and JSX syntax
+Plug 'vim-ruby/vim-ruby'
+Plug 'tpope/vim-rails'
+Plug 'jparise/vim-graphql'
 
 " == Linting ==
+Plug 'dense-analysis/ale'
 Plug 'prettier/vim-prettier'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
 
 " === Plugin settings ===
+" language server
+let g:LanguageClient_serverCommands = {
+\ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
+\ }
+
 " prettier
 let g:prettier#autoformat = 0
 " autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue Prettier
 
-"" == w0rp/ale ==
-" let g:ale_sign_error = '●'
-" let g:ale_lint_on_save = 1
-" let g:ale_lint_on_text_changed = 0
-" let g:ale_lint_on_enter = 0
-" let g:ale_linters = {
-" \  'python': ['flake8', 'pylint'],
-" \}
-" let g:ale_fixers = {
-" \  'python': ['black'],
-" \}
+" == w0rp/ale ==
+let g:ale_sign_error = '●'
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_text_changed = 0
+let g:ale_lint_on_enter = 0
+let g:ale_linters = {
+\  'ruby': ['standardrb', 'rubocop'],
+\}
+let g:ale_fixers = {
+\  'ruby': ['standardrb'],
+\}
 
 " typescript syntax disable indenting for CoC to handle
 let g:typescript_indent_disable = 1
@@ -83,7 +96,7 @@ augroup END
 
 " == fatih/vim-go ==
 " disable gd for :GoDef
-let g:go_def_mapping_enabled = 0
+" let g:go_def_mapping_enabled = 0
 
 "" Status line
 set laststatus=2                                      " always show statusline
@@ -146,7 +159,7 @@ command! MakeTags !ctags -R --exclude=.git --exclude=node_modules,deps --exclude
 command! Q q
 
 " Golint
-set rtp+=$GOPATH/src/golang.org/x/lint/misc/vim
+" set rtp+=$GOPATH/src/golang.org/x/lint/misc/vim
 
 " == COLOR SCHEME ==
 let base16colorspace=256
@@ -162,6 +175,7 @@ if has("gui_running")
 endif
 let g:netrw_localrmdir='rm -rf' " allow netrw rmdir to delete directories containing files
 let python_highlight_all=1
+set re=0
 set termguicolors
 set hidden
 set encoding=utf-8
@@ -201,10 +215,16 @@ set nowritebackup
 set cmdheight=2
 set updatetime=300
 set shortmess+=c
-set signcolumn=yes
+if has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
 set colorcolumn=+1
 set foldmethod=syntax
 set foldlevel=99
+set completeopt-=preview
 
 "-----------------"
 "coc.nvim settings"
@@ -218,6 +238,7 @@ let g:coc_global_extensions = [
   \ 'coc-prettier',
   \ 'coc-python',
   \ 'coc-json',
+  \ 'coc-solargraph',
   \ ]
 
 " Use tab for trigger completion with characters ahead and navigate.
@@ -333,7 +354,7 @@ autocmd BufWritePre * :call TrimEndLinesMain()
 " C formatting
 autocmd BufNewFile,BufRead *.c  setlocal ts=4 sw=4 sts=4 ai fileformat=unix
 " tsx and jsx highlighting
-" autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
+autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
 " Go formatting
-autocmd BufNewFile,BufRead *.go setlocal ts=4 sw=4 sts=4 ai noet fileformat=unix
+" autocmd BufNewFile,BufRead *.go setlocal ts=4 sw=4 sts=4 ai noet fileformat=unix
 set tags=tags
