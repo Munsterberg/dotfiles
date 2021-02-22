@@ -1,7 +1,7 @@
-syntax off "required for polyglot
+syntax on "required for polyglot
 filetype plugin on                  " required
-let g:python_host_prog = '/usr/local/bin/python2'
-let g:python3_host_prog = '/usr/local/bin/python3'
+let g:python_host_prog = '/Users/munsterberg/.pyenv/versions/neovim2/bin/python'
+let g:python3_host_prog = '/Users/munsterberg/.pyenv/versions/neovim3/bin/python'
 set clipboard=unnamed
 
 " Plugins will be downloaded under the specified directory.
@@ -26,6 +26,7 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'ap/vim-buftabline'
 Plug 'janko/vim-test'
 Plug 'wakatime/vim-wakatime'
+Plug 'ludovicchabant/vim-gutentags'
 
 " fuzzy file finder
 Plug '/usr/local/opt/fzf'
@@ -35,9 +36,9 @@ Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " == Syntax ==
-Plug 'styled-components/vim-styled-components', { 'branch': 'main'  }
+" Plug 'styled-components/vim-styled-components', { 'branch': 'main'  }
 " Plug 'sheerun/vim-polyglot'
-" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'pangloss/vim-javascript'
 Plug 'herringtondarkholme/yats.vim'
 Plug 'leafgarland/typescript-vim'
@@ -45,10 +46,12 @@ Plug 'maxmellon/vim-jsx-pretty'   " JS and JSX syntax
 Plug 'vim-ruby/vim-ruby'
 Plug 'tpope/vim-rails'
 Plug 'jparise/vim-graphql'
+Plug 'elixir-editors/vim-elixir'
+Plug 'slashmili/alchemist.vim'
 
 " == Linting ==
 Plug 'dense-analysis/ale'
-Plug 'prettier/vim-prettier'
+" Plug 'prettier/vim-prettier'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -60,8 +63,13 @@ let g:LanguageClient_serverCommands = {
 \ }
 
 " prettier
-let g:prettier#autoformat = 0
+" let g:prettier#autoformat = 0
 " autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue Prettier
+
+" KITE
+let g:kite_supported_languages = ['python', 'javascript', 'typescript']
+" View documentation with kite copilot but dont override K
+nmap <silent> <buffer> gK <Plug>(kite-docs)
 
 " == w0rp/ale ==
 let g:ale_sign_error = '●'
@@ -96,7 +104,7 @@ augroup END
 
 " == fatih/vim-go ==
 " disable gd for :GoDef
-" let g:go_def_mapping_enabled = 0
+let g:go_def_mapping_enabled = 0
 
 "" Status line
 set laststatus=2                                      " always show statusline
@@ -153,13 +161,13 @@ endif
 ca w!! w !sudo tee >/dev/null "%"
 
 " ctags
-command! MakeTags !ctags -R --exclude=.git --exclude=node_modules,deps --exclude=test .
+command! MakeTags !ctags -R deps --exclude=test .
 
 " listen to me vim
 command! Q q
 
 " Golint
-" set rtp+=$GOPATH/src/golang.org/x/lint/misc/vim
+set rtp+=$GOPATH/src/golang.org/x/lint/misc/vim
 
 " == COLOR SCHEME ==
 let base16colorspace=256
@@ -224,7 +232,11 @@ endif
 set colorcolumn=+1
 set foldmethod=syntax
 set foldlevel=99
-set completeopt-=preview
+set completeopt+=menuone   " show the popup menu even when there is only 1 match
+set completeopt+=noinsert  " don't insert any text until user chooses a match
+set completeopt-=longest   " don't insert the longest common text
+set completeopt+=preview
+set belloff+=ctrlg  " if vim beeps during completion
 
 "-----------------"
 "coc.nvim settings"
@@ -274,7 +286,7 @@ nnoremap <leader>crc :-1read $HOME/.vim/snippets/.crc.js<CR>4jwwli
 nnoremap <leader>fsc :-1read $HOME/.vim/snippets/.fsc.js<CR>3jf(li
 
 let g:netrw_banner = 0
-nnoremap - :Ex \| Explore <CR>
+nnoremap - :Explore <CR>
 
 " FUNCTIONS
 
@@ -327,6 +339,9 @@ endfunction
 
 command! -nargs=* Zet call ZettelEdit(<f-args>)
 
+" CocPrettier command
+command! -nargs=0 Prettier :call CocAction('runCommand', 'prettier.formatFile')
+
 function! ZettelEdit(...)
   " build the file name
   let l:sep = ''
@@ -356,5 +371,8 @@ autocmd BufNewFile,BufRead *.c  setlocal ts=4 sw=4 sts=4 ai fileformat=unix
 " tsx and jsx highlighting
 autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
 " Go formatting
-" autocmd BufNewFile,BufRead *.go setlocal ts=4 sw=4 sts=4 ai noet fileformat=unix
+autocmd BufNewFile,BufRead *.go setlocal ts=4 sw=4 sts=4 ai noet fileformat=unix
+" Elixir formatting
+autocmd BufWritePost *.exs,*.ex silent :!mix format %
+
 set tags=tags

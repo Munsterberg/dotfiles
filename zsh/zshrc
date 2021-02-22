@@ -10,7 +10,7 @@ zet() {
   nvim "+Zet $*"
 }
 
-plugins=(git python nvm npm tmux vscode colorize docker jira)
+plugins=(git python nvm npm tmux vscode colorize docker)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -31,8 +31,9 @@ export SSH_KEY_PATH="~/.ssh/rsa_id"
 
 export PATH="/usr/local/opt/openssl@1.1/bin:$PATH"
 # Linking support by default
-export LDFLAGS="-L/usr/local/opt/openssl@1.1/lib"
-export CPPFLAGS="-I/usr/local/opt/openssl@1.1/include"
+export LDFLAGS="-L$(brew --prefix openssl)/lib"
+export CPPFLAGS="-I$(brew --prefix openssl)/include"
+export CFLAGS="-I$(brew --prefix openssl)/include"
 
 export PKG_CONFIG_PATH="/usr/local/opt/openssl@1.1/lib/pkgconfig"
 
@@ -59,8 +60,7 @@ export PATH="$PATH:$GOPATH"
 export PATH="$PATH:$GOBIN"
 
 # PYENV
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
+export PATH="$HOME/.pyenv/bin:$PATH"
 
 # BASE16
 BASE16_SHELL=$HOME/.config/base16-shell/
@@ -72,6 +72,7 @@ export PATH="$PATH:/Users/munsterberg/.local/bin"
 export PATH="/usr/local/sbin:$PATH"
 export PATH="/usr/local/bin:$PATH"
 export PATH="/usr/local/share/npm/bin:$PATH"
+export PATH="$HOME/.poetry/bin:$PATH"
 export DYLD_LIBRARY_PATH=/usr/local/opt/openssl/lib:$DYLD_LIBRARY_PATH
 
 eval "$(rbenv init -)"
