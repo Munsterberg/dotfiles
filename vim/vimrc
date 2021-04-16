@@ -252,6 +252,7 @@ let g:coc_global_extensions = [
   \ 'coc-prettier',
   \ 'coc-python',
   \ 'coc-json',
+  \ 'coc-vetur',
   \ ]
 
 " Use tab for trigger completion with characters ahead and navigate.

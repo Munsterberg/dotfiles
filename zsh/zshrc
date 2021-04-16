@@ -1,21 +1,28 @@
+zmodload zsh/zprof
 export PATH=/bin:/usr/bin:/usr/local/bin:${PATH}
 
 export ZSH="$HOME/.oh-my-zsh"
 
 export WORKON_HOME="$HOME/.virtualenvs"
 
-ZSH_THEME="robbyrussell"
+fpath+=$HOME/code/dotfiles/zsh/pure
+
+ZSH_THEME=""
+ZSH_DISABLE_COMPFIX="true"
 
 zet() {
   nvim "+Zet $*"
 }
 
-plugins=(git python nvm npm tmux vscode colorize docker)
+plugins=(git python npm tmux vscode colorize docker)
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
 source $HOME/.aliases
+
+autoload -U promptinit; promptinit
+prompt pure
 
 export MANPATH="/usr/local/man:$MANPATH"
 
@@ -25,14 +32,6 @@ if [[ -n $SSH_CONNECTION ]]; then
 else
   export EDITOR='mvim'
 fi
-
-# zsh is checking .zcompdump to see if it needs regenerating
-# this makes it do that once a day
-autoload -Uz compinit
-for dump in ~/.zcompdump(N.mh+24); do
-  compinit
-done
-compinit -C
 
 # ssh
 export SSH_KEY_PATH="~/.ssh/rsa_id"
@@ -64,19 +63,19 @@ export FZF_DEFAULT_OPTS='--bind ctrl-j:down,ctrl-k:up'
 # loops over array and creates a temp bash function based on each item that first
 # deletes the temp function, loads nvm, and then attempts to rerun the command
 # with the correct binary
-declare -a NODE_GLOBALS=(`find ~/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' | xargs -n1 basename | sort | uniq`)
+# declare -a NODE_GLOBALS=(`find ~/.nvm/versions/node -maxdepth 3 -type l -wholename '*/bin/*' | xargs -n1 basename | sort | uniq`)
 
 NODE_GLOBALS+=("node")
-NODE_GLOBALS+=("nvm")
+# NODE_GLOBALS+=("nvm")
 
-load_nvm () {
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-}
+# load_nvm () {
+#     export NVM_DIR="$HOME/.nvm"
+#     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+# }
 
-for cmd in "${NODE_GLOBALS[@]}"; do
-    eval "${cmd}(){ unset -f ${NODE_GLOBALS}; load_nvm; ${cmd} \$@ }"
-done
+# for cmd in "${NODE_GLOBALS[@]}"; do
+#     eval "${cmd}(){ unset -f ${NODE_GLOBALS}; load_nvm; ${cmd} \$@ }"
+# done
 
 # GO
 export PATH="$PATH:/usr/local/go/bin"
@@ -105,3 +104,14 @@ export DYLD_LIBRARY_PATH=/usr/local/opt/openssl/lib:$DYLD_LIBRARY_PATH
 eval "$(rbenv init -)"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
+
+# zsh is checking .zcompdump to see if it needs regenerating
+# this makes it do that once a day
+autoload -Uz compinit
+if [ $(date +'%j') != $(stat -f '%Sm' -t '%j' ~/.zcompdump) ]; then
+  compinit
+else
+  compinit -C
+fi
+
+zprof
