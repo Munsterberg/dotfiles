@@ -23,7 +23,6 @@ Plug 'ap/vim-buftabline'
 Plug 'janko/vim-test'
 Plug 'wakatime/vim-wakatime'
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'puremourning/vimspector'
 
 " fuzzy file finder
 Plug '/usr/local/opt/fzf'
@@ -33,7 +32,6 @@ Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " == Syntax ==
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'pangloss/vim-javascript'
 Plug 'herringtondarkholme/yats.vim'
 Plug 'leafgarland/typescript-vim'
@@ -80,14 +78,6 @@ let g:ale_fixers = {
 " typescript syntax disable indenting for CoC to handle
 let g:typescript_indent_disable = 1
 
-" == puremourning/vimspector ==
-let g:vimspector_enable_mappings = 'HUMAN'
-" mnemonic 'di' = 'debug inspect' (pick your own, if you prefer!)
-" for normal mode - the word under the cursor
-nmap <Leader>di <Plug>VimspectorBalloonEval
-" for visual mode, the visually selected text
-xmap <Leader>di <Plug>VimspectorBalloonEval
-
 "" == python/black ==
 " let g:black_fast = 0
 " let g:black_linelength = 88
@@ -103,10 +93,6 @@ autocmd! FileType fzf
 autocmd  FileType fzf set laststatus=0 noshowmode noruler
       \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 augroup END
-
-" == fatih/vim-go ==
-" disable gd for :GoDef
-let g:go_def_mapping_enabled = 0
 
 "" Status line
 set laststatus=2                                      " always show statusline
@@ -152,6 +138,8 @@ xnoremap <leader>j :m'>+<cr>gv=gv
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 " turn off search highlight
 nnoremap <leader><space> :nohlsearch<CR>
+" open vertical explorer
+nnoremap <leader>pv :Vex<CR>
 
 " allows for CTRL-o to enter normal mode
 " only really useful for vim test with nvim
@@ -252,7 +240,7 @@ let g:coc_global_extensions = [
   \ 'coc-prettier',
   \ 'coc-python',
   \ 'coc-json',
-  \ 'coc-vetur',
+  \ 'coc-clangd'
   \ ]
 
 " Use tab for trigger completion with characters ahead and navigate.
