@@ -57,10 +57,24 @@ let g:ale_lint_on_enter = 0
 
 " == nvim-telescope/telescope.nvim ==
 nnoremap <c-p> <cmd>lua require('telescope.builtin').find_files()<cr>
-nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
-nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
-nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
-nnoremap <c-j> <cmd>lua require('telescope.builtin.actions').move_selection_next()<cr>
+nnoremap <leader>pg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>pb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>ph <cmd>lua require('telescope.builtin').help_tags()<cr>
+lua << EOF
+local actions = require('telescope.actions')
+-- Global remapping
+------------------------------
+require('telescope').setup{
+  defaults = {
+    mappings = {
+      i = {
+        ["<C-j>"] = actions.move_selection_next,
+        ["<C-k>"] = actions.move_selection_previous,
+      },
+    },
+  }
+}
+EOF
 
 "" Status line
 set laststatus=2                                      " always show statusline
@@ -291,6 +305,8 @@ autocmd BufWritePost *.exs,*.ex silent :!mix format %
 
 set tags=tags
 
+" LANGUAGE SERVERS
 lua << EOF
 require'lspconfig'.tsserver.setup{}
+require'lspconfig'.pyright.setup{}
 EOF
