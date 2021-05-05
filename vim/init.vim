@@ -9,6 +9,7 @@ call plug#begin('~/.vim/plugged')
 
 " neovim
 Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/completion-nvim'
 
 " Declare the list of plugins.
 " Color scheme plugins
@@ -36,7 +37,7 @@ Plug 'nvim-telescope/telescope.nvim'
 " Plug 'pangloss/vim-javascript'
 " Plug 'herringtondarkholme/yats.vim'
 " Plug 'leafgarland/typescript-vim'
-" Plug 'maxmellon/vim-jsx-pretty'   " JS and JSX syntax
+Plug 'maxmellon/vim-jsx-pretty'   " JS and JSX syntax
 Plug 'jparise/vim-graphql'
 Plug 'elixir-editors/vim-elixir'
 Plug 'slashmili/alchemist.vim'
@@ -209,9 +210,12 @@ set foldmethod=syntax
 set foldlevel=99
 set completeopt+=menuone   " show the popup menu even when there is only 1 match
 set completeopt+=noinsert  " don't insert any text until user chooses a match
+set completeopt+=noselect  " force user to make selection
 set completeopt-=longest   " don't insert the longest common text
-set completeopt+=preview
+set completeopt-=preview
 set belloff+=ctrlg  " if vim beeps during completion
+
+let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
 
 let g:netrw_banner = 0
 nnoremap - :Explore <CR>
@@ -305,8 +309,11 @@ autocmd BufWritePost *.exs,*.ex silent :!mix format %
 
 set tags=tags
 
+" disable diagnostics for now?
+lua vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
+
 " LANGUAGE SERVERS
 lua << EOF
-require'lspconfig'.tsserver.setup{}
-require'lspconfig'.pyright.setup{}
+require'lspconfig'.tsserver.setup{on_attach=require'completion'.on_attach}
+require'lspconfig'.pyright.setup{on_attach=require'completion'.on_attach}
 EOF
