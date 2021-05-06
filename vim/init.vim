@@ -10,7 +10,7 @@ call plug#begin('~/.vim/plugged')
 " neovim
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
-Plug 'kabouzeid/nvim-lspinstall'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 
 " Declare the list of plugins.
 " Color scheme plugins
@@ -53,12 +53,7 @@ let g:ale_sign_error = '●'
 let g:ale_lint_on_save = 1
 let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_enter = 0
-
 " == nvim-telescope/telescope.nvim ==
-nnoremap <c-p> <cmd>lua require('telescope.builtin').find_files()<cr>
-nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
-nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
-nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 lua << EOF
 local actions = require('telescope.actions')
 -- Global remapping
@@ -74,6 +69,10 @@ require('telescope').setup{
   }
 }
 EOF
+nnoremap <c-p> <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>pg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>pb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>ph <cmd>lua require('telescope.builtin').help_tags()<cr>
 
 "" Status line
 set laststatus=2                                      " always show statusline
@@ -262,12 +261,18 @@ set tags=tags
 " disable diagnostics for now?
 lua vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
 
+" TREESITTER
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+  },
+}
+EOF
+
 " LANGUAGE SERVERS
 lua << EOF
-require'lspinstall'.setup() -- important
-
-local servers = require'lspinstall'.installed_servers()
-for _, server in pairs(servers) do
-  require'lspconfig'[server].setup{on_attach=require'completion'.on_attach}
-end
+require'lspconfig'.tsserver.setup{on_attach=require'completion'.on_attach}
+require'lspconfig'.pyright.setup{on_attach=require'completion'.on_attach}
 EOF
