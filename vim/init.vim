@@ -10,6 +10,7 @@ call plug#begin('~/.vim/plugged')
 " neovim
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
+Plug 'kabouzeid/nvim-lspinstall'
 
 " Declare the list of plugins.
 " Color scheme plugins
@@ -37,11 +38,8 @@ Plug 'nvim-telescope/telescope.nvim'
 " Plug 'pangloss/vim-javascript'
 " Plug 'herringtondarkholme/yats.vim'
 " Plug 'leafgarland/typescript-vim'
-Plug 'maxmellon/vim-jsx-pretty'   " JS and JSX syntax
+Plug 'maxmellon/vim-jsx-pretty'
 Plug 'jparise/vim-graphql'
-Plug 'elixir-editors/vim-elixir'
-Plug 'slashmili/alchemist.vim'
-Plug 'octol/vim-cpp-enhanced-highlight'
 
 " == Linting ==
 Plug 'dense-analysis/ale'
@@ -58,9 +56,9 @@ let g:ale_lint_on_enter = 0
 
 " == nvim-telescope/telescope.nvim ==
 nnoremap <c-p> <cmd>lua require('telescope.builtin').find_files()<cr>
-nnoremap <leader>pg <cmd>lua require('telescope.builtin').live_grep()<cr>
-nnoremap <leader>pb <cmd>lua require('telescope.builtin').buffers()<cr>
-nnoremap <leader>ph <cmd>lua require('telescope.builtin').help_tags()<cr>
+nnoremap <leader>fg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>fb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>fh <cmd>lua require('telescope.builtin').help_tags()<cr>
 lua << EOF
 local actions = require('telescope.actions')
 -- Global remapping
@@ -97,7 +95,8 @@ set statusline+=%{&ff}]                               " line endings
 set statusline+=%<                                    " start to truncate here
 
 " === Keybindings ===
-let mapleader = ","
+nnoremap <SPACE> <Nop>
+let mapleader = " "
 imap jk <Esc>
 nnoremap k gk
 nnoremap j gj
@@ -119,8 +118,8 @@ xnoremap <leader>j :m'>+<cr>gv=gv
 " Remove all trailing whitespace by pressing F5
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 " turn off search highlight
-nnoremap <leader><space> :nohlsearch<CR>
 " open vertical explorer
+nnoremap <leader>, :nohlsearch<CR>
 nnoremap <leader>pv :Vex<CR>
 " Ripgrep quickfix
 nnoremap <leader>rg :Rg<CR>
@@ -161,6 +160,7 @@ let g:netrw_localrmdir='rm -rf' " allow netrw rmdir to delete directories contai
 let python_highlight_all=1
 set re=0
 set termguicolors
+set guicursor=n-v-c-sm:block,i-ci-ve:block
 set hidden
 set encoding=utf-8
 set background=dark
@@ -169,7 +169,7 @@ set ruler
 set linebreak
 set guifont=Inconsolata\ for\ Powerline:h20
 set tabstop=2 " set tab to 2
-set visualbell
+set noerrorbells
 set ttyfast
 set gdefault
 set splitright " open split on right not left
@@ -189,6 +189,7 @@ set lazyredraw " redraw less often
 set showmatch " highlight match
 set incsearch " search as characters are entered
 set hlsearch " hightlight matches
+set scrolloff=5
 set list listchars=tab:»\ ,trail:·,extends:>,precedes:<
 set textwidth=100
 set formatoptions=qrn1
@@ -213,31 +214,16 @@ set completeopt+=noinsert  " don't insert any text until user chooses a match
 set completeopt+=noselect  " force user to make selection
 set completeopt-=longest   " don't insert the longest common text
 set completeopt-=preview
-set belloff+=ctrlg  " if vim beeps during completion
 
 let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
 
 let g:netrw_banner = 0
 nnoremap - :Explore <CR>
 
-" FUNCTIONS
-
-" function! LinterStatus() abort
-"    let l:counts = ale#statusline#Count(bufnr(''))
-"    let l:all_errors = l:counts.error + l:counts.style_error
-"    let l:all_non_errors = l:counts.total - l:all_errors
-"    return l:counts.total == 0 ? '' : printf(
-"    \ 'W:%d E:%d',
-"    \ l:all_non_errors,
-"    \ l:all_errors
-"    \)
-" endfunction
-
 function! s:check_back_space() abort
 let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
-
 
 function! <SID>StripTrailingWhitespaces() abort
   let l = line(".")
@@ -261,51 +247,15 @@ function! DeleteHiddenBuffers() abort
 endfunction
 nnoremap <leader>bc :call DeleteHiddenBuffers()<CR>
 
-function! s:show_documentation() abort
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-command! -nargs=* Zet call ZettelEdit(<f-args>)
-
-" CocPrettier command
-command! -nargs=0 Prettier :call CocAction('runCommand', 'prettier.formatFile')
-
-function! ZettelEdit(...)
-  " build the file name
-  let l:sep = ''
-  if len(a:000) > 0
-    let l:sep = '-'
-  endif
-  let l:fname = expand('~/wiki/') . strftime("%F-%H%M") . l:sep . join(a:000, '-') . '.md'
-
-  " edit the new file
-  exec "e " . l:fname
-
-  " enter the title and timestamp (using ultisnips) in the new file
-  if len(a:000) > 0
-    exec "normal ggO\<c-r>=strftime('%Y-%m-%d %H:%M')\<cr> " . join(a:000) . "\<cr>\<esc>G"
-  else
-    exec "normal ggO\<c-r>=strftime('%Y-%m-%d %H:%M')\<cr>\<cr>\<esc>G"
-  endif
-endfunction
-
 autocmd Filetype help nmap <buffer>q :q<cr>
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 autocmd BufWritePre * :call TrimEndLinesMain()
-" Python black formatting
-" autocmd BufWritePre *.py execute ':Black'
 " C formatting
 autocmd BufNewFile,BufRead *.c  setlocal ts=4 sw=4 sts=4 ai fileformat=unix
 " tsx and jsx highlighting
 autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
 " Go formatting
 autocmd BufNewFile,BufRead *.go setlocal ts=4 sw=4 sts=4 ai noet fileformat=unix
-" Elixir formatting
-autocmd BufWritePost *.exs,*.ex silent :!mix format %
 
 set tags=tags
 
@@ -314,6 +264,10 @@ lua vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
 
 " LANGUAGE SERVERS
 lua << EOF
-require'lspconfig'.tsserver.setup{on_attach=require'completion'.on_attach}
-require'lspconfig'.pyright.setup{on_attach=require'completion'.on_attach}
+require'lspinstall'.setup() -- important
+
+local servers = require'lspinstall'.installed_servers()
+for _, server in pairs(servers) do
+  require'lspconfig'[server].setup{on_attach=require'completion'.on_attach}
+end
 EOF
