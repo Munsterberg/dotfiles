@@ -74,6 +74,10 @@ nnoremap <leader>pg <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>pb <cmd>lua require('telescope.builtin').buffers()<cr>
 nnoremap <leader>ph <cmd>lua require('telescope.builtin').help_tags()<cr>
 
+" == nvim-lua/completion-nvim ==
+inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
+inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
+
 "" Status line
 set laststatus=2                                      " always show statusline
 set statusline=                                       " clear statusline
@@ -259,7 +263,7 @@ autocmd BufNewFile,BufRead *.go setlocal ts=4 sw=4 sts=4 ai noet fileformat=unix
 set tags=tags
 
 " disable diagnostics for now?
-lua vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
+" lua vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
 
 " TREESITTER
 lua <<EOF
