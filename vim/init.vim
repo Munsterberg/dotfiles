@@ -53,6 +53,7 @@ let g:ale_sign_error = '●'
 let g:ale_lint_on_save = 1
 let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_enter = 0
+
 " == nvim-telescope/telescope.nvim ==
 lua << EOF
 local actions = require('telescope.actions')
@@ -60,6 +61,15 @@ local actions = require('telescope.actions')
 ------------------------------
 require('telescope').setup{
   defaults = {
+    vimgrep_arguments = {
+      'rg',
+      '--color=never',
+      '--no-heading',
+      '--with-filename',
+      '--line-number',
+      '--column',
+      '--smart-case'
+    },
     mappings = {
       i = {
         ["<C-j>"] = actions.move_selection_next,
@@ -254,7 +264,7 @@ autocmd Filetype help nmap <buffer>q :q<cr>
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 autocmd BufWritePre * :call TrimEndLinesMain()
 " C formatting
-autocmd BufNewFile,BufRead *.c  setlocal ts=4 sw=4 sts=4 ai fileformat=unix
+autocmd BufNewFile,BufRead *.c,*.h  setlocal ts=4 sw=4 sts=4 ai fileformat=unix
 " tsx and jsx highlighting
 autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
 " Go formatting
@@ -262,11 +272,15 @@ autocmd BufNewFile,BufRead *.go setlocal ts=4 sw=4 sts=4 ai noet fileformat=unix
 
 set tags=tags
 
-" disable diagnostics for now?
-" lua vim.lsp.handlers["textDocument/publishDiagnostics"] = function() end
+" LSP Diagnostics
+" set so they still appear on hover
+lua << EOF
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with( vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false, underline = true, signs = true, } ) vim.cmd [[autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()]] vim.cmd [[autocmd CursorHoldI * silent! lua vim.lsp.buf.signature_help()]]
+EOF
+
 
 " TREESITTER
-lua <<EOF
+lua << EOF
 require'nvim-treesitter.configs'.setup {
   ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
   highlight = {
