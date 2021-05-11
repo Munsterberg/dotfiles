@@ -120,7 +120,8 @@ set statusline+=%{&ff}]                               " line endings
 set statusline+=%<                                    " start to truncate here
 
 " === Keybindings ===
-let mapleader = ","
+nnoremap <SPACE> <Nop>
+let mapleader = " "
 imap jk <Esc>
 nnoremap k gk
 nnoremap j gj
@@ -142,7 +143,7 @@ xnoremap <leader>j :m'>+<cr>gv=gv
 " Remove all trailing whitespace by pressing F5
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 " turn off search highlight
-nnoremap <leader><space> :nohlsearch<CR>
+nnoremap <leader>, :nohlsearch<CR>
 " open vertical explorer
 nnoremap <leader>pv :Vex<CR>
 " Ripgrep quickfix
@@ -184,6 +185,7 @@ let g:netrw_localrmdir='rm -rf' " allow netrw rmdir to delete directories contai
 let python_highlight_all=1
 set re=0
 set termguicolors
+set guicursor=n-v-c-sm:block,i-ci-ve:block
 set hidden
 set encoding=utf-8
 set background=dark
@@ -192,7 +194,7 @@ set ruler
 set linebreak
 set guifont=Inconsolata\ for\ Powerline:h20
 set tabstop=2 " set tab to 2
-set visualbell
+set noerrorbells
 set ttyfast
 set gdefault
 set splitright " open split on right not left
@@ -212,6 +214,7 @@ set lazyredraw " redraw less often
 set showmatch " highlight match
 set incsearch " search as characters are entered
 set hlsearch " hightlight matches
+set scrolloff=5
 set list listchars=tab:»\ ,trail:·,extends:>,precedes:<
 set textwidth=100
 set formatoptions=qrn1
@@ -233,8 +236,9 @@ set foldmethod=syntax
 set foldlevel=99
 set completeopt+=menuone   " show the popup menu even when there is only 1 match
 set completeopt+=noinsert  " don't insert any text until user chooses a match
+set completeopt+=noselect  " force user to make selection
 set completeopt-=longest   " don't insert the longest common text
-set completeopt+=preview
+set completeopt-=preview   
 set belloff+=ctrlg  " if vim beeps during completion
 
 "-----------------"
@@ -366,7 +370,7 @@ autocmd BufWritePre * :call TrimEndLinesMain()
 " Python black formatting
 " autocmd BufWritePre *.py execute ':Black'
 " C formatting
-autocmd BufNewFile,BufRead *.c  setlocal ts=4 sw=4 sts=4 ai fileformat=unix
+autocmd BufNewFile,BufRead *.c,*.h  setlocal ts=4 sw=4 sts=4 ai fileformat=unix
 " tsx and jsx highlighting
 autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
 " Go formatting
