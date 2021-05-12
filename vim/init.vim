@@ -125,6 +125,7 @@ let mapleader = " "
 imap jk <Esc>
 nnoremap k gk
 nnoremap j gj
+nnoremap <leader>ag :Ag<cr>
 " copy entire file to clipboard
 nnoremap <leader>co ggVG"*y
 nnoremap <leader>vr :tabe $MYVIMRC<cr>
@@ -238,7 +239,7 @@ set completeopt+=menuone   " show the popup menu even when there is only 1 match
 set completeopt+=noinsert  " don't insert any text until user chooses a match
 set completeopt+=noselect  " force user to make selection
 set completeopt-=longest   " don't insert the longest common text
-set completeopt-=preview   
+set completeopt-=preview
 set belloff+=ctrlg  " if vim beeps during completion
 
 "-----------------"
