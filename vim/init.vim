@@ -90,8 +90,8 @@ let g:typescript_indent_disable = 1
 "
 "" == junegunn/fzf.vim ==
 set rtp+=/usr/local/opt/fzf
-nnoremap <c-p> :GFiles<cr>
-nnoremap <leader>pf :FZF<cr>
+nnoremap <C-p> :GFiles<cr>
+nnoremap <leader>af :FZF<cr>
 augroup fzf
 autocmd!
 autocmd! FileType fzf
@@ -125,7 +125,7 @@ let mapleader = " "
 imap jk <Esc>
 nnoremap k gk
 nnoremap j gj
-nnoremap <leader>ag :Ag<cr>
+nnoremap <leader>pp :Prettier<cr>
 " copy entire file to clipboard
 nnoremap <leader>co ggVG"*y
 nnoremap <leader>vr :tabe $MYVIMRC<cr>
@@ -149,8 +149,16 @@ nnoremap <leader>, :nohlsearch<CR>
 nnoremap <leader>pv :Vex<CR>
 " Ripgrep quickfix
 nnoremap <leader>rg :Rg<CR>
-nnoremap <C-j> :cnext<CR>
-nnoremap <C-k> :cprev<CR>
+nnoremap <leader>qn :cnext<CR>
+nnoremap <leader>qp :cprev<CR>
+" fugitive
+nnoremap <leader>gc :Git commit<CR>
+nnoremap <leader>gg :Git<CR>
+nnoremap <leader>gb :Git checkout -b
+nnoremap <leader>gl :Git log<CR>
+nnoremap <leader>gp :Git push<CR>
+nnoremap <leader>ga :Git commit -am
+nnoremap <leader>gmt :Git mergetool<CR>
 
 " allows for CTRL-o to enter normal mode
 " only really useful for vim test with nvim
@@ -378,5 +386,7 @@ autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
 autocmd BufNewFile,BufRead *.go setlocal ts=4 sw=4 sts=4 ai noet fileformat=unix
 " Elixir formatting
 autocmd BufWritePost *.exs,*.ex silent :!mix format %
+" SCSS
+autocmd FileType scss setl iskeyword+=@-@
 
 set tags=tags
