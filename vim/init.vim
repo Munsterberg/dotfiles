@@ -62,11 +62,6 @@ let g:LanguageClient_serverCommands = {
 " let g:prettier#autoformat = 0
 " autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue Prettier
 
-" KITE
-let g:kite_supported_languages = ['python', 'javascript', 'typescript']
-" View documentation with kite copilot but dont override K
-nmap <silent> <buffer> gK <Plug>(kite-docs)
-
 " == w0rp/ale ==
 let g:ale_sign_error = '●'
 let g:ale_lint_on_save = 1
@@ -87,7 +82,7 @@ let g:typescript_indent_disable = 1
 " let g:black_linelength = 88
 " let g:black_skip_string_normalization = 0
 " let g:black_virtualenv = '/usr/local/bin/'
-"
+
 "" == junegunn/fzf.vim ==
 set rtp+=/usr/local/opt/fzf
 nnoremap <C-p> :GFiles<cr>
@@ -98,6 +93,16 @@ autocmd! FileType fzf
 autocmd  FileType fzf set laststatus=0 noshowmode noruler
       \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 augroup END
+
+function! RipgrepFzf(query, fullscreen)
+  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+  let initial_command = printf(command_fmt, shellescape(a:query))
+  let reload_command = printf(command_fmt, '{q}')
+  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+endfunction
+
+command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 
 "" Status line
 set laststatus=2                                      " always show statusline
@@ -148,16 +153,16 @@ nnoremap <leader>, :nohlsearch<CR>
 " open vertical explorer
 nnoremap <leader>pv :Vex<CR>
 " Ripgrep quickfix
-nnoremap <leader>rg :Rg<CR>
+nnoremap <leader>rg :RG<CR>
 nnoremap <leader>qn :cnext<CR>
 nnoremap <leader>qp :cprev<CR>
 " fugitive
 nnoremap <leader>gc :Git commit<CR>
 nnoremap <leader>gg :Git<CR>
-nnoremap <leader>gb :Git checkout -b
+nnoremap <leader>gbc :Git checkout -b<space>
+nnoremap <leader>gb :Git branch<CR>
 nnoremap <leader>gl :Git log<CR>
 nnoremap <leader>gp :Git push<CR>
-nnoremap <leader>ga :Git commit -am
 nnoremap <leader>gmt :Git mergetool<CR>
 
 " allows for CTRL-o to enter normal mode
