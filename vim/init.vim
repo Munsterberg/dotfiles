@@ -152,6 +152,12 @@ nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 nnoremap <leader>, :nohlsearch<CR>
 " open vertical explorer
 nnoremap <leader>pv :Vex<CR>
+" buffer stuff
+nnoremap <leader>bn :bnext<CR>
+nnoremap <leader>bp :bprev<CR>
+nnoremap <leader>bd :bdelete<CR>
+nnoremap <leader>bf :bfirst<CR>
+nnoremap <leader>bl :blast<CR>
 " Ripgrep quickfix
 nnoremap <leader>rg :RG<CR>
 nnoremap <leader>qn :cnext<CR>
@@ -254,6 +260,7 @@ set completeopt+=noselect  " force user to make selection
 set completeopt-=longest   " don't insert the longest common text
 set completeopt-=preview
 set belloff+=ctrlg  " if vim beeps during completion
+set fillchars=eob:\ , " ole trusty tilde's gone
 
 "-----------------"
 "coc.nvim settings"
