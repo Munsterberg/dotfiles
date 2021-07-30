@@ -130,6 +130,7 @@ let mapleader = " "
 imap jk <Esc>
 nnoremap k gk
 nnoremap j gj
+nnoremap Y y$
 nnoremap <leader>pp :Prettier<cr>
 " copy entire file to clipboard
 nnoremap <leader>co ggVG"*y
