@@ -11,6 +11,11 @@ call plug#begin('~/.vim/plugged')
 " Color scheme plugins
 Plug 'chriskempson/base16-vim'
 
+" neovim
+Plug 'neovim/nvim-lspconfig'
+Plug 'nvim-lua/completion-nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
 " == General editor plugins ==
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
@@ -25,27 +30,27 @@ Plug 'wakatime/vim-wakatime'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'psf/black', { 'branch': 'stable' }
 
-" fuzzy file finder
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-" need neovim 0.5
-" Plug 'nvim-lua/popup.nvim'
-" Plug 'nvim-lua/plenary.nvim'
-" Plug 'nvim-telescope/telescope.nvim'
+" " fuzzy file finder
+" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+" Plug 'junegunn/fzf.vim'
+" " fuzzy file finder
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 
 " Autocomplete plugins
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " == Syntax ==
-Plug 'pangloss/vim-javascript'
-Plug 'herringtondarkholme/yats.vim'
-Plug 'leafgarland/typescript-vim'
+" Plug 'pangloss/vim-javascript'
+" Plug 'herringtondarkholme/yats.vim'
+" Plug 'leafgarland/typescript-vim'
 Plug 'maxmellon/vim-jsx-pretty'   " JS and JSX syntax
-Plug 'vim-ruby/vim-ruby'
-Plug 'tpope/vim-rails'
-Plug 'jparise/vim-graphql'
-Plug 'elixir-editors/vim-elixir'
-Plug 'slashmili/alchemist.vim'
+" Plug 'vim-ruby/vim-ruby'
+" Plug 'tpope/vim-rails'
+" Plug 'jparise/vim-graphql'
+" Plug 'elixir-editors/vim-elixir'
+" Plug 'slashmili/alchemist.vim'
 
 " == Linting ==
 Plug 'dense-analysis/ale'
@@ -55,9 +60,9 @@ call plug#end()
 
 " === Plugin settings ===
 " language server
-let g:LanguageClient_serverCommands = {
-\ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
-\ }
+" let g:LanguageClient_serverCommands = {
+" \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
+" \ }
 
 " prettier
 " let g:prettier#autoformat = 0
@@ -75,8 +80,42 @@ let g:ale_fixers = {
 \  'ruby': ['standardrb'],
 \}
 
+" == nvim-telescope/telescope.nvim ==
+lua << EOF
+local actions = require('telescope.actions')
+-- Global remapping
+------------------------------
+require('telescope').setup{
+  defaults = {
+    vimgrep_arguments = {
+      'rg',
+      '--color=never',
+      '--no-heading',
+      '--with-filename',
+      '--line-number',
+      '--column',
+      '--smart-case'
+    },
+    mappings = {
+      i = {
+        ["<C-j>"] = actions.move_selection_next,
+        ["<C-k>"] = actions.move_selection_previous,
+      },
+    },
+  }
+}
+EOF
+nnoremap <c-p> <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>pg <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>pb <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>ph <cmd>lua require('telescope.builtin').help_tags()<cr>
+
+" == nvim-lua/completion-nvim ==
+inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
+inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
+
 " typescript syntax disable indenting for CoC to handle
-let g:typescript_indent_disable = 1
+" let g:typescript_indent_disable = 1
 
 "" == python/black ==
 let g:black_fast = 0
@@ -84,25 +123,25 @@ let g:black_linelength = 88
 let g:black_skip_string_normalization = 0
 
 "" == junegunn/fzf.vim ==
-set rtp+=/usr/local/opt/fzf
-nnoremap <C-p> :GFiles<cr>
-nnoremap <leader>af :FZF<cr>
-augroup fzf
-autocmd!
-autocmd! FileType fzf
-autocmd  FileType fzf set laststatus=0 noshowmode noruler
-      \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-augroup END
-
-function! RipgrepFzf(query, fullscreen)
-  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
-  let initial_command = printf(command_fmt, shellescape(a:query))
-  let reload_command = printf(command_fmt, '{q}')
-  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-endfunction
-
-command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+" set rtp+=/usr/local/opt/fzf
+" nnoremap <C-p> :GFiles<cr>
+" nnoremap <leader>af :FZF<cr>
+" augroup fzf
+" autocmd!
+" autocmd! FileType fzf
+" autocmd  FileType fzf set laststatus=0 noshowmode noruler
+"       \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+" augroup END
+"
+" function! RipgrepFzf(query, fullscreen)
+"   let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
+"   let initial_command = printf(command_fmt, shellescape(a:query))
+"   let reload_command = printf(command_fmt, '{q}')
+"   let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
+"   call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
+" endfunction
+"
+" command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
 
 "" Status line
 set laststatus=2                                      " always show statusline
@@ -118,7 +157,7 @@ set statusline+=%{&buftype!='terminal'?expand('%:p:h:t').'\\'.expand('%:t'):expa
 set statusline+=%m                                    " modified flag
 set statusline+=%r                                    " read only flag
 set statusline+=%=                                    " left/right separator
-set statusline+=%{coc#status()}                       " coc statusline
+" set statusline+=%{coc#status()}                       " coc statusline
 set statusline+=\ [%{strlen(&ft)?(&ft\ .\ \',\'):''}  " filetype
 set statusline+=%{strlen(&fenc)?(&fenc\ .\ \',\'):''} " file encoding
 set statusline+=%{&ff}]                               " line endings
@@ -268,43 +307,43 @@ set fillchars=eob:\ , " ole trusty tilde's gone
 "coc.nvim settings"
 "-----------------"
 
-let g:coc_global_extensions = [
-  \ 'coc-snippets',
-  \ 'coc-pairs',
-  \ 'coc-tsserver',
-  \ 'coc-eslint',
-  \ 'coc-prettier',
-  \ 'coc-python',
-  \ 'coc-json',
-  \ 'coc-clangd'
-  \ ]
-
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm."
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-
-inoremap <expr> <C-J> pumvisible() ? "\<C-N>" : "j"
-inoremap <expr> <C-K> pumvisible() ? "\<C-P>" : "k"
-
-
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+" let g:coc_global_extensions = [
+"   \ 'coc-snippets',
+"   \ 'coc-pairs',
+"   \ 'coc-tsserver',
+"   \ 'coc-eslint',
+"   \ 'coc-prettier',
+"   \ 'coc-python',
+"   \ 'coc-json',
+"   \ 'coc-clangd'
+"   \ ]
+"
+" " Use tab for trigger completion with characters ahead and navigate.
+" " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+" inoremap <silent><expr> <TAB>
+"       \ pumvisible() ? "\<C-n>" :
+"       \ <SID>check_back_space() ? "\<TAB>" :
+"       \ coc#refresh()
+" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+"
+" " Use <c-space> to trigger completion.
+" inoremap <silent><expr> <c-space> coc#refresh()
+" " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" " Coc only does snippet and additional edit on confirm."
+" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+"
+" inoremap <expr> <C-J> pumvisible() ? "\<C-N>" : "j"
+" inoremap <expr> <C-K> pumvisible() ? "\<C-P>" : "k"
+"
+"
+" " Remap keys for gotos
+" nmap <silent> gd <Plug>(coc-definition)
+" nmap <silent> gy <Plug>(coc-type-definition)
+" nmap <silent> gi <Plug>(coc-implementation)
+" nmap <silent> gr <Plug>(coc-references)
+"
+" " Use K to show documentation in preview window
+" nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 " SNIPPETS
 nnoremap <leader>html :-1read $HOME/.vim/snippets/.skeleton.html<CR>7ji
@@ -355,37 +394,16 @@ function! DeleteHiddenBuffers() abort
 endfunction
 nnoremap <leader>bc :call DeleteHiddenBuffers()<CR>
 
-function! s:show_documentation() abort
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-command! -nargs=* Zet call ZettelEdit(<f-args>)
+" function! s:show_documentation() abort
+"   if (index(['vim','help'], &filetype) >= 0)
+"     execute 'h '.expand('<cword>')
+"   else
+"     call CocAction('doHover')
+"   endif
+" endfunction
 
 " CocPrettier command
-command! -nargs=0 Prettier :call CocAction('runCommand', 'prettier.formatFile')
-
-function! ZettelEdit(...)
-  " build the file name
-  let l:sep = ''
-  if len(a:000) > 0
-    let l:sep = '-'
-  endif
-  let l:fname = expand('~/wiki/') . strftime("%F-%H%M") . l:sep . join(a:000, '-') . '.md'
-
-  " edit the new file
-  exec "e " . l:fname
-
-  " enter the title and timestamp (using ultisnips) in the new file
-  if len(a:000) > 0
-    exec "normal ggO\<c-r>=strftime('%Y-%m-%d %H:%M')\<cr> " . join(a:000) . "\<cr>\<esc>G"
-  else
-    exec "normal ggO\<c-r>=strftime('%Y-%m-%d %H:%M')\<cr>\<cr>\<esc>G"
-  endif
-endfunction
+" command! -nargs=0 Prettier :call CocAction('runCommand', 'prettier.formatFile')
 
 autocmd Filetype help nmap <buffer>q :q<cr>
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
@@ -395,11 +413,11 @@ autocmd BufWritePre * :call TrimEndLinesMain()
 " C formatting
 autocmd BufNewFile,BufRead *.c,*.h  setlocal ts=4 sw=4 sts=4 ai fileformat=unix
 " tsx and jsx highlighting
-autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
+" autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
 " Go formatting
 autocmd BufNewFile,BufRead *.go setlocal ts=4 sw=4 sts=4 ai noet fileformat=unix
 " Elixir formatting
-autocmd BufWritePost *.exs,*.ex silent :!mix format %
+" autocmd BufWritePost *.exs,*.ex silent :!mix format %
 " SCSS
 autocmd FileType scss setl iskeyword+=@-@
 
