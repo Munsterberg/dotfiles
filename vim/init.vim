@@ -105,15 +105,6 @@ require('telescope').setup{
   }
 }
 EOF
-nnoremap <c-p> <cmd>lua require('telescope.builtin').find_files()<cr>
-nnoremap <leader>pg <cmd>lua require('telescope.builtin').live_grep()<cr>
-nnoremap <leader>pb <cmd>lua require('telescope.builtin').buffers()<cr>
-nnoremap <leader>ph <cmd>lua require('telescope.builtin').help_tags()<cr>
-
-" == nvim-lua/completion-nvim ==
-inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
-inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
-
 " typescript syntax disable indenting for CoC to handle
 " let g:typescript_indent_disable = 1
 
@@ -200,9 +191,9 @@ nnoremap <leader>bd :bdelete<CR>
 nnoremap <leader>bf :bfirst<CR>
 nnoremap <leader>bl :blast<CR>
 " Ripgrep quickfix
-nnoremap <leader>rg :RG<CR>
-nnoremap <leader>qn :cnext<CR>
-nnoremap <leader>qp :cprev<CR>
+" nnoremap <leader>rg :RG<CR>
+" nnoremap <leader>qn :cnext<CR>
+" nnoremap <leader>qp :cprev<CR>
 " fugitive
 nnoremap <leader>gc :Git commit<CR>
 nnoremap <leader>gg :Git<CR>
@@ -211,6 +202,17 @@ nnoremap <leader>gb :Git branch<CR>
 nnoremap <leader>gl :Git log<CR>
 nnoremap <leader>gp :Git push<CR>
 nnoremap <leader>gmt :Git mergetool<CR>
+nnoremap <c-p> <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
+" == nvim-lua/completion-nvim ==
+inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
+inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
+
+imap <silent> <C-space> <Plug>(completion_trigger)
+
 
 " allows for CTRL-o to enter normal mode
 " only really useful for vim test with nvim
@@ -422,3 +424,26 @@ autocmd BufNewFile,BufRead *.go setlocal ts=4 sw=4 sts=4 ai noet fileformat=unix
 autocmd FileType scss setl iskeyword+=@-@
 
 set tags=tags
+
+" LSP Diagnostics
+" set so they still appear on hover
+lua << EOF
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with( vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false, underline = true, signs = true, } ) vim.cmd [[autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()]] vim.cmd [[autocmd CursorHoldI * silent! lua vim.lsp.buf.signature_help()]]
+EOF
+
+
+" TREESITTER
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+  },
+}
+EOF
+
+" LANGUAGE SERVERS
+lua << EOF
+require'lspconfig'.tsserver.setup{on_attach=require'completion'.on_attach}
+require'lspconfig'.pyright.setup{on_attach=require'completion'.on_attach}
+EOF
