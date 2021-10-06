@@ -29,7 +29,11 @@ Plug 'ap/vim-buftabline'
 Plug 'janko/vim-test'
 Plug 'wakatime/vim-wakatime'
 Plug 'ludovicchabant/vim-gutentags'
-Plug 'psf/black', { 'branch': 'stable' }
+Plug 'psf/black'
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install',
+  \ 'branch': 'release/0.x'
+  \ }
 
 " " fuzzy file finder
 " Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
