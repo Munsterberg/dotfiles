@@ -25,6 +25,15 @@
   aliases = !git config --get-regexp 'alias.*' | colrm 1 6 | sed 's/[ ]/ = /' | sort
   unstage = reset --
   pushf = push --force-with-lease
+  undopush = push --force origin HEAD^:master
+  deletemerged = "!git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d"
+  logme = log --color --name-only --decorate=full --author="jetrussell93@gmail.com"
+  release-notes = "!f() { \
+    git log $1..$2 --no-merges --oneline --pretty=format:'%s' | \
+    sed '/Setting version/d'; \
+  }; f"
+  summaryme = log --abbrev-commit --pretty=oneline --author="jetrussell93@gmail.com" --since=last.mon --reverse
+  work = !sh -c 'git fetch && git checkout @{upstream} -tb \"$@\"' _
 [user]
 	email = jetrussell93@gmail.com
 	name = munsterberg
@@ -34,6 +43,14 @@
 [difftool "sourcetree"]
 	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
 	path =
-[mergetool "sourcetree"]
-	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
+[merge]
+	log = true
+	tool = vimdiff
+	conflictstyle = diff3
+[pull]
+	rebase = true
+[push]
+	default = current
+[rebase]
+	autoStash = true
+	autoSquash = true

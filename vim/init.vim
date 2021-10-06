@@ -23,6 +23,7 @@ Plug 'ap/vim-buftabline'
 Plug 'janko/vim-test'
 Plug 'wakatime/vim-wakatime'
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'psf/black', { 'branch': 'stable' }
 
 " fuzzy file finder
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -78,10 +79,9 @@ let g:ale_fixers = {
 let g:typescript_indent_disable = 1
 
 "" == python/black ==
-" let g:black_fast = 0
-" let g:black_linelength = 88
-" let g:black_skip_string_normalization = 0
-" let g:black_virtualenv = '/usr/local/bin/'
+let g:black_fast = 0
+let g:black_linelength = 88
+let g:black_skip_string_normalization = 0
 
 "" == junegunn/fzf.vim ==
 set rtp+=/usr/local/opt/fzf
@@ -132,6 +132,7 @@ nnoremap k gk
 nnoremap j gj
 nnoremap Y y$
 nnoremap <leader>pp :Prettier<cr>
+nnoremap <leader>bb :Black<cr>
 " copy entire file to clipboard
 nnoremap <leader>co ggVG"*y
 nnoremap <leader>vr :tabe $MYVIMRC<cr>
