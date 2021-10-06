@@ -15,6 +15,7 @@ Plug 'chriskempson/base16-vim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-lua/completion-nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'windwp/nvim-autopairs'
 
 " == General editor plugins ==
 Plug 'tpope/vim-surround'
@@ -446,4 +447,9 @@ EOF
 lua << EOF
 require'lspconfig'.tsserver.setup{on_attach=require'completion'.on_attach}
 require'lspconfig'.pyright.setup{on_attach=require'completion'.on_attach}
+EOF
+
+" AUTO CLOSE
+lua << EOF
+require'nvim-autopairs'.setup{}
 EOF
