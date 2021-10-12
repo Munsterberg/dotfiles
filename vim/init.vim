@@ -13,9 +13,14 @@ Plug 'chriskempson/base16-vim'
 
 " neovim
 Plug 'neovim/nvim-lspconfig'
-Plug 'nvim-lua/completion-nvim'
+" Plug 'nvim-lua/completion-nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'windwp/nvim-autopairs'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
 
 " == General editor plugins ==
 Plug 'tpope/vim-surround'
@@ -213,10 +218,10 @@ nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <leader>fh <cmd>Telescope help_tags<cr>
 
 " == nvim-lua/completion-nvim ==
-inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
-inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
+" inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
+" inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
 
-imap <silent> <C-space> <Plug>(completion_trigger)
+" imap <silent> <C-space> <Plug>(completion_trigger)
 
 
 " allows for CTRL-o to enter normal mode
@@ -432,8 +437,44 @@ set tags=tags
 
 " LSP Diagnostics
 " set so they still appear on hover
+" lua << EOF
+" vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with( vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false, underline = true, signs = true, } ) vim.cmd [[autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()]] vim.cmd [[autocmd CursorHoldI * silent! lua vim.lsp.buf.signature_help()]]
+" EOF
+
+" LANGUAGE SERVERS
+" lua << EOF
+" require'lspconfig'.tsserver.setup{on_attach=require'completion'.on_attach}
+" require'lspconfig'.pyright.setup{on_attach=require'completion'.on_attach}
+" EOF
+
 lua << EOF
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with( vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false, underline = true, signs = true, } ) vim.cmd [[autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()]] vim.cmd [[autocmd CursorHoldI * silent! lua vim.lsp.buf.signature_help()]]
+  local cmp = require'cmp'
+
+  cmp.setup({
+    snippet = {
+      expand = function(args)
+        vim.fn["vsnip#anonymous"](args.body)
+      end,
+    },
+    mapping = {
+      ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.close(),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    },
+    sources = {
+      { name = 'nvim_lsp' },
+      { name = 'vsnip' },
+      { name = 'buffer' },
+    }
+  })
+  require('lspconfig')['pyright'].setup {
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  }
+  require('lspconfig')['tsserver'].setup {
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  }
 EOF
 
 
@@ -447,11 +488,6 @@ require'nvim-treesitter.configs'.setup {
 }
 EOF
 
-" LANGUAGE SERVERS
-lua << EOF
-require'lspconfig'.tsserver.setup{on_attach=require'completion'.on_attach}
-require'lspconfig'.pyright.setup{on_attach=require'completion'.on_attach}
-EOF
 
 " AUTO CLOSE
 lua << EOF
