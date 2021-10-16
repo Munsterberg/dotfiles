@@ -17,7 +17,9 @@ Plug 'neovim/nvim-lspconfig'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'windwp/nvim-autopairs'
 Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/nvim-cmp', {
+  \ 'branch': 'main'
+  \ }
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
@@ -420,16 +422,14 @@ nnoremap <leader>bc :call DeleteHiddenBuffers()<CR>
 autocmd Filetype help nmap <buffer>q :q<cr>
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 autocmd BufWritePre * :call TrimEndLinesMain()
-" Python black formatting
-" autocmd BufWritePre *.py execute ':Black'
 " C formatting
 autocmd BufNewFile,BufRead *.c,*.h  setlocal ts=4 sw=4 sts=4 ai fileformat=unix
-" tsx and jsx highlighting
-" autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
 " Go formatting
 autocmd BufNewFile,BufRead *.go setlocal ts=4 sw=4 sts=4 ai noet fileformat=unix
+autocmd BufWritePre *.go lua vim.lsp.buf.formatting()
+autocmd BufWritePre *.go lua goimports(1000)
 " Elixir formatting
-" autocmd BufWritePost *.exs,*.ex silent :!mix format %
+autocmd BufWritePost *.exs,*.ex silent :!mix format %
 " SCSS
 autocmd FileType scss setl iskeyword+=@-@
 
@@ -457,6 +457,8 @@ lua << EOF
       end,
     },
     mapping = {
+      ['<C-j>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+      ['<C-k>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
       ['<C-d>'] = cmp.mapping.scroll_docs(-4),
       ['<C-f>'] = cmp.mapping.scroll_docs(4),
       ['<C-Space>'] = cmp.mapping.complete(),
@@ -475,6 +477,36 @@ lua << EOF
   require('lspconfig')['tsserver'].setup {
     capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
   }
+  require('lspconfig')['gopls'].setup {
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  }
+EOF
+
+lua << EOF
+function goimports(timeoutms)
+    local context = { source = { organizeImports = true } }
+    vim.validate { context = { context, "t", true } }
+
+    local params = vim.lsp.util.make_range_params()
+    params.context = context
+
+    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, timeout_ms)
+    if not result or next(result) == nil then return end
+    local actions = result[1].result
+    if not actions then return end
+    local action = actions[1]
+
+    if action.edit or type(action.command) == "table" then
+      if action.edit then
+        vim.lsp.util.apply_workspace_edit(action.edit)
+      end
+      if type(action.command) == "table" then
+        vim.lsp.buf.execute_command(action.command)
+      end
+    else
+      vim.lsp.buf.execute_command(action)
+    end
+  end
 EOF
 
 
