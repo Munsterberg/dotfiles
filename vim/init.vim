@@ -59,7 +59,7 @@ Plug 'nvim-telescope/telescope.nvim'
 " Plug 'leafgarland/typescript-vim'
 Plug 'maxmellon/vim-jsx-pretty'   " JS and JSX syntax
 " Plug 'vim-ruby/vim-ruby'
-" Plug 'tpope/vim-rails'
+Plug 'tpope/vim-rails'
 " Plug 'jparise/vim-graphql'
 " Plug 'elixir-editors/vim-elixir'
 " Plug 'slashmili/alchemist.vim'
@@ -478,6 +478,9 @@ lua << EOF
     capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
   }
   require('lspconfig')['gopls'].setup {
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  }
+  require('lspconfig')['solargraph'].setup {
     capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
   }
 EOF
