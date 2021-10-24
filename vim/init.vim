@@ -1,268 +1,16 @@
-syntax on "required for polyglot
+" syntax on "required for polyglot
 filetype plugin on                  " required
 let g:python_host_prog = '/Users/munsterberg/.pyenv/versions/neovim2/bin/python'
 let g:python3_host_prog = '/Users/munsterberg/.pyenv/versions/neovim3/bin/python'
 set clipboard=unnamed
 
-" Plugins will be downloaded under the specified directory.
-call plug#begin('~/.vim/plugged')
-
-" Declare the list of plugins.
-" Color scheme plugins
-Plug 'chriskempson/base16-vim'
-
-" neovim
-Plug 'neovim/nvim-lspconfig'
-" Plug 'nvim-lua/completion-nvim'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'windwp/nvim-autopairs'
-Plug 'hrsh7th/cmp-nvim-lsp'
-Plug 'hrsh7th/nvim-cmp', {
-  \ 'branch': 'main'
-  \ }
-Plug 'hrsh7th/cmp-vsnip'
-Plug 'hrsh7th/vim-vsnip'
-Plug 'hrsh7th/vim-vsnip-integ'
-
-" == General editor plugins ==
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat'
-Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-fugitive'
-Plug 'tomtom/tcomment_vim'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'ap/vim-buftabline'
-Plug 'janko/vim-test'
-Plug 'wakatime/vim-wakatime'
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'psf/black'
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'yarn install',
-  \ 'branch': 'release/0.x'
-  \ }
-
-" " fuzzy file finder
-" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-" Plug 'junegunn/fzf.vim'
-" " fuzzy file finder
-Plug 'nvim-lua/popup.nvim'
-Plug 'nvim-lua/plenary.nvim'
-Plug 'nvim-telescope/telescope.nvim'
-
-" Autocomplete plugins
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-" == Syntax ==
-" Plug 'pangloss/vim-javascript'
-" Plug 'herringtondarkholme/yats.vim'
-" Plug 'leafgarland/typescript-vim'
-Plug 'maxmellon/vim-jsx-pretty'   " JS and JSX syntax
-" Plug 'vim-ruby/vim-ruby'
-Plug 'tpope/vim-rails'
-" Plug 'jparise/vim-graphql'
-" Plug 'elixir-editors/vim-elixir'
-" Plug 'slashmili/alchemist.vim'
-
-" == Linting ==
-Plug 'dense-analysis/ale'
-
-" List ends here. Plugins become visible to Vim after this call.
-call plug#end()
-
-" === Plugin settings ===
-" language server
-" let g:LanguageClient_serverCommands = {
-" \ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
-" \ }
-
-" prettier
-" let g:prettier#autoformat = 0
-" autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue Prettier
-
-" == w0rp/ale ==
-let g:ale_sign_error = '●'
-let g:ale_lint_on_save = 1
-let g:ale_lint_on_text_changed = 0
-let g:ale_lint_on_enter = 0
-let g:ale_linters = {
-\  'ruby': ['standardrb', 'rubocop'],
-\}
-let g:ale_fixers = {
-\  'ruby': ['standardrb'],
-\}
-
-" == nvim-telescope/telescope.nvim ==
-lua << EOF
-local actions = require('telescope.actions')
--- Global remapping
-------------------------------
-require('telescope').setup{
-  defaults = {
-    vimgrep_arguments = {
-      'rg',
-      '--color=never',
-      '--no-heading',
-      '--with-filename',
-      '--line-number',
-      '--column',
-      '--smart-case'
-    },
-    mappings = {
-      i = {
-        ["<C-j>"] = actions.move_selection_next,
-        ["<C-k>"] = actions.move_selection_previous,
-      },
-    },
-  }
-}
-EOF
-" typescript syntax disable indenting for CoC to handle
-" let g:typescript_indent_disable = 1
-
-"" == python/black ==
-let g:black_fast = 0
-let g:black_linelength = 88
-let g:black_skip_string_normalization = 0
-
-"" == junegunn/fzf.vim ==
-" set rtp+=/usr/local/opt/fzf
-" nnoremap <C-p> :GFiles<cr>
-" nnoremap <leader>af :FZF<cr>
-" augroup fzf
-" autocmd!
-" autocmd! FileType fzf
-" autocmd  FileType fzf set laststatus=0 noshowmode noruler
-"       \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-" augroup END
-"
-" function! RipgrepFzf(query, fullscreen)
-"   let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
-"   let initial_command = printf(command_fmt, shellescape(a:query))
-"   let reload_command = printf(command_fmt, '{q}')
-"   let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-"   call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-" endfunction
-"
-" command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
-
-"" Status line
-set laststatus=2                                      " always show statusline
-set statusline=                                       " clear statusline
-set statusline+=%l                                    " current line number
-set statusline+=/%L                                   " total lines
-set statusline+=(%p%%)                                " percentage through the file
-set statusline+=%4c                                   " cursor column
-set statusline+=\|%-4{strwidth(getline('.'))}         " line length
-" set statusline+=%{LinterStatus()}                     " ALE status
-set statusline+=%=                                    " left/right separator
-set statusline+=%{&buftype!='terminal'?expand('%:p:h:t').'\\'.expand('%:t'):expand('%')}  " dir\filename.ext
-set statusline+=%m                                    " modified flag
-set statusline+=%r                                    " read only flag
-set statusline+=%=                                    " left/right separator
-" set statusline+=%{coc#status()}                       " coc statusline
-set statusline+=\ [%{strlen(&ft)?(&ft\ .\ \',\'):''}  " filetype
-set statusline+=%{strlen(&fenc)?(&fenc\ .\ \',\'):''} " file encoding
-set statusline+=%{&ff}]                               " line endings
-set statusline+=%<                                    " start to truncate here
-
-" === Keybindings ===
-nnoremap <SPACE> <Nop>
-let mapleader = " "
-imap jk <Esc>
-nnoremap k gk
-nnoremap j gj
-nnoremap Y y$
-nnoremap <leader>pp :Prettier<cr>
-nnoremap <leader>bb :Black<cr>
-" copy entire file to clipboard
-nnoremap <leader>co ggVG"*y
-nnoremap <leader>vr :tabe $MYVIMRC<cr>
-nnoremap <leader>so :source $MYVIMRC<cr>
-" Edit/split/create a file in the same dir as the current
-nnoremap <leader>e :e <C-R>=escape(expand("%:p:h"), '') . '/'<cr>
-nnoremap <leader>s :split <C-R>=escape(expand("%:p:h"), '') . '/'<cr>
-nnoremap <leader>v :vnew <C-R>=escape(expand("%:p:h"), '') . '/'<cr>
-" Replace word under cursor
-nnoremap <leader>* :%s/\<<c-r><c-w>\>//g<left><left>
-" Move lines up and down
-nnoremap <leader>k :m-2<cr>==
-nnoremap <leader>j :m+<cr>==
-xnoremap <leader>k :m-2<cr>gv=gv
-xnoremap <leader>j :m'>+<cr>gv=gv
-" Remove all trailing whitespace by pressing F5
-nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
-" turn off search highlight
-nnoremap <leader>, :nohlsearch<CR>
-" open vertical explorer
-nnoremap <leader>pv :Vex<CR>
-" buffer stuff
-nnoremap <leader>bn :bnext<CR>
-nnoremap <leader>bp :bprev<CR>
-nnoremap <leader>bd :bdelete<CR>
-nnoremap <leader>bf :bfirst<CR>
-nnoremap <leader>bl :blast<CR>
-" Ripgrep quickfix
-" nnoremap <leader>rg :RG<CR>
-" nnoremap <leader>qn :cnext<CR>
-" nnoremap <leader>qp :cprev<CR>
-" fugitive
-nnoremap <leader>gc :Git commit<CR>
-nnoremap <leader>gg :Git<CR>
-nnoremap <leader>gbc :Git checkout -b<space>
-nnoremap <leader>gb :Git branch<CR>
-nnoremap <leader>gl :Git log<CR>
-nnoremap <leader>gp :Git push<CR>
-nnoremap <leader>gmt :Git mergetool<CR>
-nnoremap <c-p> <cmd>Telescope find_files<cr>
-nnoremap <leader>fg <cmd>Telescope live_grep<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>fh <cmd>Telescope help_tags<cr>
-
-" == nvim-lua/completion-nvim ==
-" inoremap <expr> <C-j> pumvisible() ? "\<C-n>" : "\<C-j>"
-" inoremap <expr> <C-k> pumvisible() ? "\<C-p>" : "\<C-k>"
-
-" imap <silent> <C-space> <Plug>(completion_trigger)
-
-
-" allows for CTRL-o to enter normal mode
-" only really useful for vim test with nvim
-if has('nvim')
-  tmap <C-o> <C-\><C-n>
-endif
-
-" :w!! to save with sudo
-ca w!! w !sudo tee >/dev/null "%"
-
-" ctags
-command! MakeTags !ctags -R deps --exclude=test .
-
-" listen to me vim
-command! Q q
-
-" Golint
-set rtp+=$GOPATH/src/golang.org/x/lint/misc/vim
-
-" == COLOR SCHEME ==
-let base16colorspace=256
-colorscheme base16-horizon-dark
-
-" == GENERAL SETTINGS ==
-" SETTINGS
-if has("gui_running")
-  let s:uname = system("uname")
-  if s:uname == "Darwin\n"
-    set guifont=Inconsolata\ for\ Powerline:h15
-  endif
-endif
+set encoding=utf-8
 let g:netrw_localrmdir='rm -rf' " allow netrw rmdir to delete directories containing files
-let python_highlight_all=1
+" let python_highlight_all=1
 set re=0
 set termguicolors
 set guicursor=n-v-c-sm:block,i-ci-ve:block
 set hidden
-set encoding=utf-8
 set background=dark
 set backspace=2
 set ruler
@@ -300,12 +48,7 @@ set nowritebackup
 set cmdheight=2
 set updatetime=300
 set shortmess+=c
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
+set signcolumn=number
 set colorcolumn=+1
 set foldmethod=syntax
 set foldlevel=99
@@ -317,68 +60,80 @@ set completeopt-=preview
 set belloff+=ctrlg  " if vim beeps during completion
 set fillchars=eob:\ , " ole trusty tilde's gone
 
-"-----------------"
-"coc.nvim settings"
-"-----------------"
+"" Status line
+set laststatus=2                                      " always show statusline
+set statusline=                                       " clear statusline
+set statusline+=%l                                    " current line number
+set statusline+=/%L                                   " total lines
+set statusline+=(%p%%)                                " percentage through the file
+set statusline+=%4c                                   " cursor column
+set statusline+=\|%-4{strwidth(getline('.'))}         " line length
+set statusline+=%=                                    " left/right separator
+set statusline+=%{&buftype!='terminal'?expand('%:p:h:t').'\\'.expand('%:t'):expand('%')}  " dir\filename.ext
+set statusline+=%m                                    " modified flag
+set statusline+=%r                                    " read only flag
+set statusline+=%=                                    " left/right separator
+set statusline+=\ [%{strlen(&ft)?(&ft\ .\ \',\'):''}  " filetype
+set statusline+=%{strlen(&fenc)?(&fenc\ .\ \',\'):''} " file encoding
+set statusline+=%{&ff}]                               " line endings
+set statusline+=%<                                    " start to truncate here
 
-" let g:coc_global_extensions = [
-"   \ 'coc-snippets',
-"   \ 'coc-pairs',
-"   \ 'coc-tsserver',
-"   \ 'coc-eslint',
-"   \ 'coc-prettier',
-"   \ 'coc-python',
-"   \ 'coc-json',
-"   \ 'coc-clangd'
-"   \ ]
-"
-" " Use tab for trigger completion with characters ahead and navigate.
-" " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-" inoremap <silent><expr> <TAB>
-"       \ pumvisible() ? "\<C-n>" :
-"       \ <SID>check_back_space() ? "\<TAB>" :
-"       \ coc#refresh()
-" inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-"
-" " Use <c-space> to trigger completion.
-" inoremap <silent><expr> <c-space> coc#refresh()
-" " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" " Coc only does snippet and additional edit on confirm."
-" inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-"
-" inoremap <expr> <C-J> pumvisible() ? "\<C-N>" : "j"
-" inoremap <expr> <C-K> pumvisible() ? "\<C-P>" : "k"
-"
-"
-" " Remap keys for gotos
-" nmap <silent> gd <Plug>(coc-definition)
-" nmap <silent> gy <Plug>(coc-type-definition)
-" nmap <silent> gi <Plug>(coc-implementation)
-" nmap <silent> gr <Plug>(coc-references)
-"
-" " Use K to show documentation in preview window
-" nnoremap <silent> K :call <SID>show_documentation()<CR>
+" JavaScript
+autocmd BufNewFile,BufRead *.es6 setf javascript
+" TypeScript
+autocmd BufNewFile,BufRead *.tsx setf typescriptreact
+" C formatting
+autocmd BufNewFile,BufRead *.c,*.h  setlocal ts=4 sw=4 sts=4 ai fileformat=unix
+" Go formatting
+autocmd BufNewFile,BufRead *.go setlocal ts=4 sw=4 sts=4 ai noet fileformat=unix
+autocmd BufWritePre *.go lua vim.lsp.buf.formatting()
+autocmd BufWritePre *.go lua goimports(1000)
+" Elixir formatting
+autocmd BufWritePost *.exs,*.ex silent :!mix format %
+" Markdown
+autocmd BufNewFile,BufRead *.md set filetype=markdown
+" SCSS
+autocmd FileType scss setl iskeyword+=@-@
+" Ruby
+autocmd FileType ruby setlocal shiftwidth=2 tabstop=2
+" YAML
+autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
 
-" SNIPPETS
-nnoremap <leader>html :-1read $HOME/.vim/snippets/.skeleton.html<CR>7ji
-nnoremap <leader>crc :-1read $HOME/.vim/snippets/.crc.js<CR>4jwwli
-nnoremap <leader>fsc :-1read $HOME/.vim/snippets/.fsc.js<CR>3jf(li
+" imports
+runtime ./plug.vim
+if has("unix")
+  let s:uname = system("uname -s")
+  " Do Mac stuff
+  if s:uname == "Darwin\n"
+    set guifont=Inconsolata\ for\ Powerline:h15
+    runtime ./macos.vim
+  endif
+endif
+
+runtime ./maps.vim
+
+"" == python/black ==
+let g:black_fast = 0
+let g:black_linelength = 88
+let g:black_skip_string_normalization = 0
+
+" :w!! to save with sudo
+ca w!! w !sudo tee >/dev/null "%"
+
+" ctags
+command! MakeTags !ctags -R deps --exclude=test .
+
+" listen to me vim
+command! Q q
+
+" Golint
+set rtp+=$GOPATH/src/golang.org/x/lint/misc/vim
+
+" == COLOR SCHEME ==
+let base16colorspace=256
+colorscheme base16-horizon-dark
 
 let g:netrw_banner = 0
-nnoremap - :Explore <CR>
-
-" FUNCTIONS
-
-" function! LinterStatus() abort
-"    let l:counts = ale#statusline#Count(bufnr(''))
-"    let l:all_errors = l:counts.error + l:counts.style_error
-"    let l:all_non_errors = l:counts.total - l:all_errors
-"    return l:counts.total == 0 ? '' : printf(
-"    \ 'W:%d E:%d',
-"    \ l:all_non_errors,
-"    \ l:all_errors
-"    \)
-" endfunction
 
 function! s:check_back_space() abort
 let col = col('.') - 1
@@ -408,82 +163,12 @@ function! DeleteHiddenBuffers() abort
 endfunction
 nnoremap <leader>bc :call DeleteHiddenBuffers()<CR>
 
-" function! s:show_documentation() abort
-"   if (index(['vim','help'], &filetype) >= 0)
-"     execute 'h '.expand('<cword>')
-"   else
-"     call CocAction('doHover')
-"   endif
-" endfunction
-
-" CocPrettier command
-" command! -nargs=0 Prettier :call CocAction('runCommand', 'prettier.formatFile')
 
 autocmd Filetype help nmap <buffer>q :q<cr>
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 autocmd BufWritePre * :call TrimEndLinesMain()
-" C formatting
-autocmd BufNewFile,BufRead *.c,*.h  setlocal ts=4 sw=4 sts=4 ai fileformat=unix
-" Go formatting
-autocmd BufNewFile,BufRead *.go setlocal ts=4 sw=4 sts=4 ai noet fileformat=unix
-autocmd BufWritePre *.go lua vim.lsp.buf.formatting()
-autocmd BufWritePre *.go lua goimports(1000)
-" Elixir formatting
-autocmd BufWritePost *.exs,*.ex silent :!mix format %
-" SCSS
-autocmd FileType scss setl iskeyword+=@-@
 
 set tags=tags
-
-" LSP Diagnostics
-" set so they still appear on hover
-" lua << EOF
-" vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with( vim.lsp.diagnostic.on_publish_diagnostics, { virtual_text = false, underline = true, signs = true, } ) vim.cmd [[autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()]] vim.cmd [[autocmd CursorHoldI * silent! lua vim.lsp.buf.signature_help()]]
-" EOF
-
-" LANGUAGE SERVERS
-" lua << EOF
-" require'lspconfig'.tsserver.setup{on_attach=require'completion'.on_attach}
-" require'lspconfig'.pyright.setup{on_attach=require'completion'.on_attach}
-" EOF
-
-lua << EOF
-  local cmp = require'cmp'
-
-  cmp.setup({
-    snippet = {
-      expand = function(args)
-        vim.fn["vsnip#anonymous"](args.body)
-      end,
-    },
-    mapping = {
-      ['<C-j>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-      ['<C-k>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-      ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-      ['<C-f>'] = cmp.mapping.scroll_docs(4),
-      ['<C-Space>'] = cmp.mapping.complete(),
-      ['<C-e>'] = cmp.mapping.close(),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }),
-    },
-    sources = {
-      { name = 'nvim_lsp' },
-      { name = 'vsnip' },
-      { name = 'buffer' },
-    }
-  })
-  require('lspconfig')['pyright'].setup {
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-  }
-  require('lspconfig')['tsserver'].setup {
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-  }
-  require('lspconfig')['gopls'].setup {
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-  }
-  require('lspconfig')['solargraph'].setup {
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-  }
-EOF
 
 lua << EOF
 function goimports(timeoutms)
@@ -510,21 +195,4 @@ function goimports(timeoutms)
       vim.lsp.buf.execute_command(action)
     end
   end
-EOF
-
-
-" TREESITTER
-lua << EOF
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = "maintained", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
-  highlight = {
-    enable = true,              -- false will disable the whole extension
-  },
-}
-EOF
-
-
-" AUTO CLOSE
-lua << EOF
-require'nvim-autopairs'.setup{}
 EOF
