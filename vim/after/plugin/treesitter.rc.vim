@@ -21,7 +21,8 @@ require'nvim-treesitter.configs'.setup {
     "ruby",
     "typescript",
     "toml",
-    "vim"
+    "vim",
+    "lua"
   },
   highlight = {
     enable = true,

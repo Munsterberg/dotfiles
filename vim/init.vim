@@ -62,21 +62,21 @@ set fillchars=eob:\ , " ole trusty tilde's gone
 
 "" Status line
 set laststatus=2                                      " always show statusline
-set statusline=                                       " clear statusline
-set statusline+=%l                                    " current line number
-set statusline+=/%L                                   " total lines
-set statusline+=(%p%%)                                " percentage through the file
-set statusline+=%4c                                   " cursor column
-set statusline+=\|%-4{strwidth(getline('.'))}         " line length
-set statusline+=%=                                    " left/right separator
-set statusline+=%{&buftype!='terminal'?expand('%:p:h:t').'\\'.expand('%:t'):expand('%')}  " dir\filename.ext
-set statusline+=%m                                    " modified flag
-set statusline+=%r                                    " read only flag
-set statusline+=%=                                    " left/right separator
-set statusline+=\ [%{strlen(&ft)?(&ft\ .\ \',\'):''}  " filetype
-set statusline+=%{strlen(&fenc)?(&fenc\ .\ \',\'):''} " file encoding
-set statusline+=%{&ff}]                               " line endings
-set statusline+=%<                                    " start to truncate here
+"set statusline=                                       " clear statusline
+"set statusline+=%l                                    " current line number
+"set statusline+=/%L                                   " total lines
+"set statusline+=(%p%%)                                " percentage through the file
+"set statusline+=%4c                                   " cursor column
+"set statusline+=\|%-4{strwidth(getline('.'))}         " line length
+"set statusline+=%=                                    " left/right separator
+"set statusline+=%{&buftype!='terminal'?expand('%:p:h:t').'\\'.expand('%:t'):expand('%')}  " dir\filename.ext
+"set statusline+=%m                                    " modified flag
+"set statusline+=%r                                    " read only flag
+"set statusline+=%=                                    " left/right separator
+"set statusline+=\ [%{strlen(&ft)?(&ft\ .\ \',\'):''}  " filetype
+"set statusline+=%{strlen(&fenc)?(&fenc\ .\ \',\'):''} " file encoding
+"set statusline+=%{&ff}]                               " line endings
+"set statusline+=%<                                    " start to truncate here
 
 " JavaScript
 autocmd BufNewFile,BufRead *.es6 setf javascript
