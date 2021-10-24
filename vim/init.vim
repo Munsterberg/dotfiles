@@ -15,7 +15,7 @@ set background=dark
 set backspace=2
 set ruler
 set linebreak
-set guifont=Inconsolata\ for\ Powerline:h20
+set guifont=Inconsolata\ for\ Powerline:h15
 set tabstop=2 " set tab to 2
 set noerrorbells
 set ttyfast
@@ -59,24 +59,7 @@ set completeopt-=longest   " don't insert the longest common text
 set completeopt-=preview
 set belloff+=ctrlg  " if vim beeps during completion
 set fillchars=eob:\ , " ole trusty tilde's gone
-
-"" Status line
-set laststatus=2                                      " always show statusline
-"set statusline=                                       " clear statusline
-"set statusline+=%l                                    " current line number
-"set statusline+=/%L                                   " total lines
-"set statusline+=(%p%%)                                " percentage through the file
-"set statusline+=%4c                                   " cursor column
-"set statusline+=\|%-4{strwidth(getline('.'))}         " line length
-"set statusline+=%=                                    " left/right separator
-"set statusline+=%{&buftype!='terminal'?expand('%:p:h:t').'\\'.expand('%:t'):expand('%')}  " dir\filename.ext
-"set statusline+=%m                                    " modified flag
-"set statusline+=%r                                    " read only flag
-"set statusline+=%=                                    " left/right separator
-"set statusline+=\ [%{strlen(&ft)?(&ft\ .\ \',\'):''}  " filetype
-"set statusline+=%{strlen(&fenc)?(&fenc\ .\ \',\'):''} " file encoding
-"set statusline+=%{&ff}]                               " line endings
-"set statusline+=%<                                    " start to truncate here
+set laststatus=2 " always show statusline
 
 " JavaScript
 autocmd BufNewFile,BufRead *.es6 setf javascript
@@ -105,7 +88,7 @@ if has("unix")
   let s:uname = system("uname -s")
   " Do Mac stuff
   if s:uname == "Darwin\n"
-    set guifont=Inconsolata\ for\ Powerline:h15
+    set guifont=Inconsolata\ for\ Powerline:h2
     runtime ./macos.vim
   endif
 endif
