@@ -31,7 +31,7 @@ lua << EOF
   }
   require('lspconfig')['tsserver'].setup {
     capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
-    filetypes = { "typescript", "typescriptreact", "typescript.tsx" }
+    filetypes = { "typescript", "typescriptreact", "typescript.tsx", "javascript" }
   }
   require('lspconfig')['gopls'].setup {
     capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
