@@ -40,6 +40,9 @@ lua << EOF
   require('lspconfig')['solargraph'].setup {
     capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
   }
+  require('lspconfig')['ccls'].setup {
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  }
 
   nvim_lsp.diagnosticls.setup {
     on_attach = on_attach,

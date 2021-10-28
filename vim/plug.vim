@@ -34,7 +34,6 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'ap/vim-buftabline'
 Plug 'janko/vim-test'
 Plug 'wakatime/vim-wakatime'
-Plug 'ludovicchabant/vim-gutentags'
 Plug 'psf/black'
 Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
