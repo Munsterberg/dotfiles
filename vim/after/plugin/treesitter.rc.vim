@@ -12,6 +12,7 @@ require'nvim-treesitter.configs'.setup {
     "yaml",
     "html",
     "c",
+    "cpp",
     "css",
     "dockerfile",
     "elixir",
@@ -19,6 +20,7 @@ require'nvim-treesitter.configs'.setup {
     "javascript",
     "python",
     "ruby",
+    "rust",
     "typescript",
     "toml",
     "vim",
@@ -26,6 +28,7 @@ require'nvim-treesitter.configs'.setup {
   },
   highlight = {
     enable = true,
+    additional_vim_regex_highlighting = true,
   },
   indent = {
     enable = false,

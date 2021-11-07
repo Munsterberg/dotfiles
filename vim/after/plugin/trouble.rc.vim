@@ -1,7 +1,5 @@
 lua << EOF
   require("trouble").setup {
-    auto_open = true, -- automatically open the list when you have diagnostics
-    auto_close = true, -- automatically close the list when you have no diagnostics
     -- keybinds
     vim.api.nvim_set_keymap("n", "<leader>xx", "<cmd>Trouble<cr>",
       {silent = true, noremap = true}
@@ -21,5 +19,7 @@ lua << EOF
     vim.api.nvim_set_keymap("n", "gR", "<cmd>Trouble lsp_references<cr>",
       {silent = true, noremap = true}
     ),
+
+    mode = "lsp_document_diagnostics",
   }
 EOF

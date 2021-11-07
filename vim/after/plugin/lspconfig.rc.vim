@@ -6,6 +6,7 @@ lua << EOF
   local nvim_lsp = require('lspconfig')
   local cmp = require'cmp'
   local protocol = require'vim.lsp.protocol'
+  local path_to_elixirls = vim.fn.expand("~/elixir-ls/release/language_server.sh")
 
   local on_attach = function(client, bufnr)
     local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
@@ -100,7 +101,14 @@ lua << EOF
     }
   })
   require('lspconfig')['pyright'].setup {
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    settings = {
+      pyright = {
+        useTabs = true,
+        typeChecking = false,
+        reportGeneralTypeIssues = false,
+      }
+    }
   }
   require('lspconfig')['tsserver'].setup {
     capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
@@ -115,6 +123,23 @@ lua << EOF
   require('lspconfig')['ccls'].setup {
     capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
   }
+  nvim_lsp.elixirls.setup({
+    cmd = {path_to_elixirls},
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    on_attach = on_attach,
+    settings = {
+      elixirLS = {
+        -- I choose to disable dialyzer for personal reasons, but
+        -- I would suggest you also disable it unless you are well
+        -- aquainted with dialzyer and know how to use it.
+        dialyzerEnabled = false,
+        -- I also choose to turn off the auto dep fetching feature.
+        -- It often get's into a weird state that requires deleting
+        -- the .elixir_ls directory and restarting your editor.
+        fetchDeps = false
+      }
+    }
+  })
 
   nvim_lsp.diagnosticls.setup {
     on_attach = on_attach,
@@ -177,8 +202,9 @@ lua << EOF
   -- icon
   vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
     vim.lsp.diagnostic.on_publish_diagnostics, {
-      underline = true,
-      virtual_text = false
+      underline = false,
+      virtual_text = false,
+      signs = false,
     }
   )
 EOF

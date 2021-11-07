@@ -6,6 +6,8 @@ call plug#begin()
 " Declare the list of plugins.
 " Color scheme plugins
 Plug 'chriskempson/base16-vim'
+Plug 'rktjmp/lush.nvim'
+Plug 'ellisonleao/gruvbox.nvim'
 
 " neovim
 Plug 'kyazdani42/nvim-web-devicons'
