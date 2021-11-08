@@ -7,6 +7,7 @@ lua << EOF
   local cmp = require'cmp'
   local protocol = require'vim.lsp.protocol'
   local path_to_elixirls = vim.fn.expand("~/elixir-ls/release/language_server.sh")
+  local path_to_solc = vim.fn.expand("/usr/local/bin/solc")
 
   local on_attach = function(client, bufnr)
     local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
@@ -123,6 +124,16 @@ lua << EOF
   require('lspconfig')['ccls'].setup {
     capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
   }
+  nvim_lsp.elixirls.setup({
+    cmd = {path_to_solc},
+    args = {
+      '--lsp',
+    },
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    on_attach = on_attach,
+    settings = {
+    }
+  })
   nvim_lsp.elixirls.setup({
     cmd = {path_to_elixirls},
     capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),

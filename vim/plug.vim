@@ -7,7 +7,6 @@ call plug#begin()
 " Color scheme plugins
 Plug 'chriskempson/base16-vim'
 Plug 'rktjmp/lush.nvim'
-Plug 'ellisonleao/gruvbox.nvim'
 
 " neovim
 Plug 'kyazdani42/nvim-web-devicons'
@@ -53,6 +52,9 @@ Plug 'tpope/vim-rails'
 
 " == Linting ==
 Plug 'dense-analysis/ale'
+
+" WAITING FOR LSP and TREESITER SUPPORT
+Plug 'tomlion/vim-solidity'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()

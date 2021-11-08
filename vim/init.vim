@@ -114,7 +114,7 @@ set rtp+=$GOPATH/src/golang.org/x/lint/misc/vim
 
 " == COLOR SCHEME ==
 let base16colorspace=256
-colorscheme gruvbox
+colorscheme base16-horizon-dark
 
 let g:netrw_banner = 0
 
