@@ -1,220 +1,21 @@
-syntax on "required for polyglot
+" syntax on "required for polyglot
 filetype plugin on                  " required
 let g:python_host_prog = '/Users/munsterberg/.pyenv/versions/neovim2/bin/python'
 let g:python3_host_prog = '/Users/munsterberg/.pyenv/versions/neovim3/bin/python'
 set clipboard=unnamed
 
-" Plugins will be downloaded under the specified directory.
-call plug#begin('~/.vim/plugged')
-
-" Declare the list of plugins.
-" Color scheme plugins
-Plug 'chriskempson/base16-vim'
-
-" == General editor plugins ==
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-repeat'
-Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-fugitive'
-Plug 'tomtom/tcomment_vim'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'editorconfig/editorconfig-vim'
-Plug 'ap/vim-buftabline'
-Plug 'janko/vim-test'
-Plug 'wakatime/vim-wakatime'
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'psf/black', { 'branch': 'stable' }
-
-" fuzzy file finder
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-" need neovim 0.5
-" Plug 'nvim-lua/popup.nvim'
-" Plug 'nvim-lua/plenary.nvim'
-" Plug 'nvim-telescope/telescope.nvim'
-
-" Autocomplete plugins
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-" == Syntax ==
-Plug 'pangloss/vim-javascript'
-Plug 'herringtondarkholme/yats.vim'
-Plug 'leafgarland/typescript-vim'
-Plug 'maxmellon/vim-jsx-pretty'   " JS and JSX syntax
-Plug 'vim-ruby/vim-ruby'
-Plug 'tpope/vim-rails'
-Plug 'jparise/vim-graphql'
-Plug 'elixir-editors/vim-elixir'
-Plug 'slashmili/alchemist.vim'
-
-" == Linting ==
-Plug 'dense-analysis/ale'
-
-" List ends here. Plugins become visible to Vim after this call.
-call plug#end()
-
-" === Plugin settings ===
-" language server
-let g:LanguageClient_serverCommands = {
-\ 'ruby': ['~/.rbenv/shims/solargraph', 'stdio'],
-\ }
-
-" prettier
-" let g:prettier#autoformat = 0
-" autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue Prettier
-
-" == w0rp/ale ==
-let g:ale_sign_error = '●'
-let g:ale_lint_on_save = 1
-let g:ale_lint_on_text_changed = 0
-let g:ale_lint_on_enter = 0
-let g:ale_linters = {
-\  'ruby': ['standardrb', 'rubocop'],
-\}
-let g:ale_fixers = {
-\  'ruby': ['standardrb'],
-\}
-
-" typescript syntax disable indenting for CoC to handle
-let g:typescript_indent_disable = 1
-
-"" == python/black ==
-let g:black_fast = 0
-let g:black_linelength = 88
-let g:black_skip_string_normalization = 0
-
-"" == junegunn/fzf.vim ==
-set rtp+=/usr/local/opt/fzf
-nnoremap <C-p> :GFiles<cr>
-nnoremap <leader>af :FZF<cr>
-augroup fzf
-autocmd!
-autocmd! FileType fzf
-autocmd  FileType fzf set laststatus=0 noshowmode noruler
-      \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
-augroup END
-
-function! RipgrepFzf(query, fullscreen)
-  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
-  let initial_command = printf(command_fmt, shellescape(a:query))
-  let reload_command = printf(command_fmt, '{q}')
-  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-endfunction
-
-command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
-
-"" Status line
-set laststatus=2                                      " always show statusline
-set statusline=                                       " clear statusline
-set statusline+=%l                                    " current line number
-set statusline+=/%L                                   " total lines
-set statusline+=(%p%%)                                " percentage through the file
-set statusline+=%4c                                   " cursor column
-set statusline+=\|%-4{strwidth(getline('.'))}         " line length
-" set statusline+=%{LinterStatus()}                     " ALE status
-set statusline+=%=                                    " left/right separator
-set statusline+=%{&buftype!='terminal'?expand('%:p:h:t').'\\'.expand('%:t'):expand('%')}  " dir\filename.ext
-set statusline+=%m                                    " modified flag
-set statusline+=%r                                    " read only flag
-set statusline+=%=                                    " left/right separator
-set statusline+=%{coc#status()}                       " coc statusline
-set statusline+=\ [%{strlen(&ft)?(&ft\ .\ \',\'):''}  " filetype
-set statusline+=%{strlen(&fenc)?(&fenc\ .\ \',\'):''} " file encoding
-set statusline+=%{&ff}]                               " line endings
-set statusline+=%<                                    " start to truncate here
-
-" === Keybindings ===
-nnoremap <SPACE> <Nop>
-let mapleader = " "
-imap jk <Esc>
-nnoremap k gk
-nnoremap j gj
-nnoremap Y y$
-nnoremap <leader>pp :Prettier<cr>
-nnoremap <leader>bb :Black<cr>
-" copy entire file to clipboard
-nnoremap <leader>co ggVG"*y
-nnoremap <leader>vr :tabe $MYVIMRC<cr>
-nnoremap <leader>so :source $MYVIMRC<cr>
-" Edit/split/create a file in the same dir as the current
-nnoremap <leader>e :e <C-R>=escape(expand("%:p:h"), '') . '/'<cr>
-nnoremap <leader>s :split <C-R>=escape(expand("%:p:h"), '') . '/'<cr>
-nnoremap <leader>v :vnew <C-R>=escape(expand("%:p:h"), '') . '/'<cr>
-" Replace word under cursor
-nnoremap <leader>* :%s/\<<c-r><c-w>\>//g<left><left>
-" Move lines up and down
-nnoremap <leader>k :m-2<cr>==
-nnoremap <leader>j :m+<cr>==
-xnoremap <leader>k :m-2<cr>gv=gv
-xnoremap <leader>j :m'>+<cr>gv=gv
-" Remove all trailing whitespace by pressing F5
-nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
-" turn off search highlight
-nnoremap <leader>, :nohlsearch<CR>
-" open vertical explorer
-nnoremap <leader>pv :Vex<CR>
-" buffer stuff
-nnoremap <leader>bn :bnext<CR>
-nnoremap <leader>bp :bprev<CR>
-nnoremap <leader>bd :bdelete<CR>
-nnoremap <leader>bf :bfirst<CR>
-nnoremap <leader>bl :blast<CR>
-" Ripgrep quickfix
-nnoremap <leader>rg :RG<CR>
-nnoremap <leader>qn :cnext<CR>
-nnoremap <leader>qp :cprev<CR>
-" fugitive
-nnoremap <leader>gc :Git commit<CR>
-nnoremap <leader>gg :Git<CR>
-nnoremap <leader>gbc :Git checkout -b<space>
-nnoremap <leader>gb :Git branch<CR>
-nnoremap <leader>gl :Git log<CR>
-nnoremap <leader>gp :Git push<CR>
-nnoremap <leader>gmt :Git mergetool<CR>
-
-" allows for CTRL-o to enter normal mode
-" only really useful for vim test with nvim
-if has('nvim')
-  tmap <C-o> <C-\><C-n>
-endif
-
-" :w!! to save with sudo
-ca w!! w !sudo tee >/dev/null "%"
-
-" ctags
-command! MakeTags !ctags -R deps --exclude=test .
-
-" listen to me vim
-command! Q q
-
-" Golint
-set rtp+=$GOPATH/src/golang.org/x/lint/misc/vim
-
-" == COLOR SCHEME ==
-let base16colorspace=256
-colorscheme base16-horizon-dark
-
-" == GENERAL SETTINGS ==
-" SETTINGS
-if has("gui_running")
-  let s:uname = system("uname")
-  if s:uname == "Darwin\n"
-    set guifont=Inconsolata\ for\ Powerline:h15
-  endif
-endif
+set encoding=utf-8
 let g:netrw_localrmdir='rm -rf' " allow netrw rmdir to delete directories containing files
-let python_highlight_all=1
+" let python_highlight_all=1
 set re=0
 set termguicolors
 set guicursor=n-v-c-sm:block,i-ci-ve:block
 set hidden
-set encoding=utf-8
 set background=dark
 set backspace=2
 set ruler
 set linebreak
-set guifont=Inconsolata\ for\ Powerline:h20
+set guifont=Inconsolata\ for\ Powerline:h15
 set tabstop=2 " set tab to 2
 set noerrorbells
 set ttyfast
@@ -247,12 +48,7 @@ set nowritebackup
 set cmdheight=2
 set updatetime=300
 set shortmess+=c
-if has("patch-8.1.1564")
-  " Recently vim can merge signcolumn and number column into one
-  set signcolumn=number
-else
-  set signcolumn=yes
-endif
+set signcolumn=number
 set colorcolumn=+1
 set foldmethod=syntax
 set foldlevel=99
@@ -263,69 +59,64 @@ set completeopt-=longest   " don't insert the longest common text
 set completeopt-=preview
 set belloff+=ctrlg  " if vim beeps during completion
 set fillchars=eob:\ , " ole trusty tilde's gone
+set laststatus=2 " always show statusline
 
-"-----------------"
-"coc.nvim settings"
-"-----------------"
+" JavaScript
+autocmd BufNewFile,BufRead *.es6 setf javascript
+" TypeScript
+autocmd BufNewFile,BufRead *.tsx setf typescriptreact
+" C formatting
+autocmd BufNewFile,BufRead *.c,*.h  setlocal ts=4 sw=4 sts=4 ai fileformat=unix
+" Go formatting
+autocmd BufNewFile,BufRead *.go setlocal ts=4 sw=4 sts=4 ai noet fileformat=unix
+autocmd BufWritePre *.go lua vim.lsp.buf.formatting()
+autocmd BufWritePre *.go lua goimports(1000)
+" Elixir formatting
+autocmd BufWritePost *.exs,*.ex silent :!mix format %
+" Markdown
+autocmd BufNewFile,BufRead *.md set filetype=markdown
+" SCSS
+autocmd FileType scss setl iskeyword+=@-@
+" Ruby
+autocmd FileType ruby setlocal shiftwidth=2 tabstop=2
+" YAML
+autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
 
-let g:coc_global_extensions = [
-  \ 'coc-snippets',
-  \ 'coc-pairs',
-  \ 'coc-tsserver',
-  \ 'coc-eslint',
-  \ 'coc-prettier',
-  \ 'coc-python',
-  \ 'coc-json',
-  \ 'coc-clangd'
-  \ ]
+" imports
+runtime ./plug.vim
+if has("unix")
+  let s:uname = system("uname -s")
+  " Do Mac stuff
+  if s:uname == "Darwin\n"
+    set guifont=Inconsolata\ for\ Powerline:h2
+    runtime ./macos.vim
+  endif
+endif
 
-" Use tab for trigger completion with characters ahead and navigate.
-" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+runtime ./maps.vim
 
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
-" Coc only does snippet and additional edit on confirm."
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+"" == python/black ==
+let g:black_fast = 0
+let g:black_linelength = 88
+let g:black_skip_string_normalization = 0
 
-inoremap <expr> <C-J> pumvisible() ? "\<C-N>" : "j"
-inoremap <expr> <C-K> pumvisible() ? "\<C-P>" : "k"
+" :w!! to save with sudo
+ca w!! w !sudo tee >/dev/null "%"
 
+" ctags
+command! MakeTags !ctags -R deps --exclude=test .
 
-" Remap keys for gotos
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+" listen to me vim
+command! Q q
 
-" Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+" Golint
+set rtp+=$GOPATH/src/golang.org/x/lint/misc/vim
 
-" SNIPPETS
-nnoremap <leader>html :-1read $HOME/.vim/snippets/.skeleton.html<CR>7ji
-nnoremap <leader>crc :-1read $HOME/.vim/snippets/.crc.js<CR>4jwwli
-nnoremap <leader>fsc :-1read $HOME/.vim/snippets/.fsc.js<CR>3jf(li
+" == COLOR SCHEME ==
+let base16colorspace=256
+colorscheme base16-horizon-dark
 
 let g:netrw_banner = 0
-nnoremap - :Explore <CR>
-
-" FUNCTIONS
-
-" function! LinterStatus() abort
-"    let l:counts = ale#statusline#Count(bufnr(''))
-"    let l:all_errors = l:counts.error + l:counts.style_error
-"    let l:all_non_errors = l:counts.total - l:all_errors
-"    return l:counts.total == 0 ? '' : printf(
-"    \ 'W:%d E:%d',
-"    \ l:all_non_errors,
-"    \ l:all_errors
-"    \)
-" endfunction
 
 function! s:check_back_space() abort
 let col = col('.') - 1
@@ -355,52 +146,36 @@ function! DeleteHiddenBuffers() abort
 endfunction
 nnoremap <leader>bc :call DeleteHiddenBuffers()<CR>
 
-function! s:show_documentation() abort
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-command! -nargs=* Zet call ZettelEdit(<f-args>)
-
-" CocPrettier command
-command! -nargs=0 Prettier :call CocAction('runCommand', 'prettier.formatFile')
-
-function! ZettelEdit(...)
-  " build the file name
-  let l:sep = ''
-  if len(a:000) > 0
-    let l:sep = '-'
-  endif
-  let l:fname = expand('~/wiki/') . strftime("%F-%H%M") . l:sep . join(a:000, '-') . '.md'
-
-  " edit the new file
-  exec "e " . l:fname
-
-  " enter the title and timestamp (using ultisnips) in the new file
-  if len(a:000) > 0
-    exec "normal ggO\<c-r>=strftime('%Y-%m-%d %H:%M')\<cr> " . join(a:000) . "\<cr>\<esc>G"
-  else
-    exec "normal ggO\<c-r>=strftime('%Y-%m-%d %H:%M')\<cr>\<cr>\<esc>G"
-  endif
-endfunction
 
 autocmd Filetype help nmap <buffer>q :q<cr>
 autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
 autocmd BufWritePre * :call TrimEndLinesMain()
-" Python black formatting
-" autocmd BufWritePre *.py execute ':Black'
-" C formatting
-autocmd BufNewFile,BufRead *.c,*.h  setlocal ts=4 sw=4 sts=4 ai fileformat=unix
-" tsx and jsx highlighting
-autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.tsx
-" Go formatting
-autocmd BufNewFile,BufRead *.go setlocal ts=4 sw=4 sts=4 ai noet fileformat=unix
-" Elixir formatting
-autocmd BufWritePost *.exs,*.ex silent :!mix format %
-" SCSS
-autocmd FileType scss setl iskeyword+=@-@
 
 set tags=tags
+
+lua << EOF
+function goimports(timeoutms)
+    local context = { source = { organizeImports = true } }
+    vim.validate { context = { context, "t", true } }
+
+    local params = vim.lsp.util.make_range_params()
+    params.context = context
+
+    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, timeout_ms)
+    if not result or next(result) == nil then return end
+    local actions = result[1].result
+    if not actions then return end
+    local action = actions[1]
+
+    if action.edit or type(action.command) == "table" then
+      if action.edit then
+        vim.lsp.util.apply_workspace_edit(action.edit)
+      end
+      if type(action.command) == "table" then
+        vim.lsp.buf.execute_command(action.command)
+      end
+    else
+      vim.lsp.buf.execute_command(action)
+    end
+  end
+EOF
