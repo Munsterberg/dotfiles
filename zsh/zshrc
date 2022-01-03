@@ -77,7 +77,7 @@ NODE_GLOBALS+=("node")
 # GO
 export PATH="$PATH:/usr/local/go/bin"
 export GOBIN="$GOPATH/bin"
-export GOPATH="$HOME/code/go_workspace"
+export GOPATH="$HOME/code"
 export GOROOT="/usr/local/opt/go/libexec"
 export PATH="$PATH:$GOPATH"
 export PATH="$PATH:$GOBIN"

@@ -41,6 +41,7 @@ Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
   \ 'branch': 'release/0.x'
   \ }
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 " " fuzzy file finder
 Plug 'nvim-lua/popup.nvim'

@@ -20,6 +20,6 @@ lua << EOF
       {silent = true, noremap = true}
     ),
 
-    mode = "lsp_document_diagnostics",
+    mode = "document_diagnostics",
   }
 EOF

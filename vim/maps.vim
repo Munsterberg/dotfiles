@@ -30,6 +30,7 @@ nnoremap <leader>, :nohlsearch<CR>
 " open vertical explorer
 nnoremap <leader>pv :Vex<CR>
 " buffer stuff
+nnoremap <leader>bu :ls<CR>:b<Space>
 nnoremap <leader>bn :bnext<CR>
 nnoremap <leader>bp :bprev<CR>
 nnoremap <leader>bd :bdelete<CR>

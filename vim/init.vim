@@ -11,6 +11,7 @@ set re=0
 set termguicolors
 set guicursor=n-v-c-sm:block,i-ci-ve:block
 set hidden
+set confirm
 set background=dark
 set backspace=2
 set ruler
