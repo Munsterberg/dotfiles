@@ -36,7 +36,7 @@ lua << EOF
     --buf_set_keymap('n', '<C-j>', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
     buf_set_keymap('n', '<S-C-j>', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
     buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+    buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 
     -- formatting
     if client.name == 'tsserver' then
@@ -109,11 +109,13 @@ lua << EOF
         typeChecking = false,
         reportGeneralTypeIssues = false,
       }
-    }
+    },
+    on_attach = on_attach,
   }
   require('lspconfig')['tsserver'].setup {
     capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
-    filetypes = { "typescript", "typescriptreact", "typescript.tsx", "javascript" }
+    filetypes = { "typescript", "typescriptreact", "typescript.tsx", "javascript" },
+    on_attach = on_attach,
   }
   require('lspconfig')['gopls'].setup {
     capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
@@ -125,13 +127,16 @@ lua << EOF
         },
         staticcheck = true,
       }
-    }
+    },
+    on_attach = on_attach,
   }
   require('lspconfig')['solargraph'].setup {
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    on_attach = on_attach,
   }
   require('lspconfig')['ccls'].setup {
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    on_attach = on_attach,
   }
   nvim_lsp.elixirls.setup({
     cmd = {path_to_solc},

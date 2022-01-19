@@ -52,7 +52,7 @@ Plug 'maxmellon/vim-jsx-pretty'   " JS and JSX syntax
 Plug 'tpope/vim-rails'
 
 " == Linting ==
-Plug 'dense-analysis/ale'
+" Plug 'dense-analysis/ale'
 
 " WAITING FOR LSP and TREESITER SUPPORT
 Plug 'tomlion/vim-solidity'
