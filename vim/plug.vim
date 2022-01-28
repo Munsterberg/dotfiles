@@ -41,7 +41,7 @@ Plug 'prettier/vim-prettier', {
   \ 'do': 'yarn install',
   \ 'branch': 'release/0.x'
   \ }
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'mfussenegger/nvim-dap'
 
 " " fuzzy file finder
 Plug 'nvim-lua/popup.nvim'
@@ -53,9 +53,6 @@ Plug 'tpope/vim-rails'
 
 " == Linting ==
 " Plug 'dense-analysis/ale'
-
-" WAITING FOR LSP and TREESITER SUPPORT
-Plug 'tomlion/vim-solidity'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
