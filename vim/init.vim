@@ -180,3 +180,5 @@ function goimports(timeoutms)
     end
   end
 EOF
+
+lua require('dap-python').setup('~/.virtualenvs/debugpy/bin/python')

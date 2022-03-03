@@ -42,6 +42,7 @@ Plug 'prettier/vim-prettier', {
   \ 'branch': 'release/0.x'
   \ }
 Plug 'mfussenegger/nvim-dap'
+Plug 'mfussenegger/nvim-dap-python'
 
 " " fuzzy file finder
 Plug 'nvim-lua/popup.nvim'
