@@ -97,6 +97,7 @@ export PATH="/usr/local/bin:$PATH"
 export PATH="$HOME/.poetry/bin:$PATH"
 export PATH="$PATH:$(npm get prefix)/bin"
 export DYLD_LIBRARY_PATH=/usr/local/opt/openssl/lib:$DYLD_LIBRARY_PATH
+export PATH="/Users/munsterberg/.local/share/solana/install/active_release/bin:$PATH"
 
 eval "$(rbenv init -)"
 eval "$(pyenv init -)"

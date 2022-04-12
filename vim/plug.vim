@@ -51,6 +51,7 @@ Plug 'nvim-telescope/telescope.nvim'
 
 Plug 'maxmellon/vim-jsx-pretty'   " JS and JSX syntax
 Plug 'tpope/vim-rails'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 " == Linting ==
 " Plug 'dense-analysis/ale'
