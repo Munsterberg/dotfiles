@@ -22,6 +22,7 @@ Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
 Plug 'folke/trouble.nvim'
+Plug 'github/copilot.vim'
 
 " == General editor plugins ==
 Plug 'nvim-lualine/lualine.nvim'
@@ -50,8 +51,6 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 
 Plug 'maxmellon/vim-jsx-pretty'   " JS and JSX syntax
-Plug 'tpope/vim-rails'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 " == Linting ==
 " Plug 'dense-analysis/ale'
