@@ -31,6 +31,7 @@ set shiftwidth=2 " for indent options on text i.e. >>
 set smarttab
 set expandtab " set tabs to spaces
 set number " show line numbers
+set relativenumber
 set numberwidth=5
 set showcmd " show command at bottom
 set cursorline " highlight current line
@@ -66,6 +67,8 @@ set laststatus=2 " always show statusline
 autocmd BufNewFile,BufRead *.es6 setf javascript
 " TypeScript
 autocmd BufNewFile,BufRead *.tsx setf typescriptreact
+" Treat prisma as graphql
+au BufNewFile,BufRead *.prisma setfiletype graphql
 " C formatting
 autocmd BufNewFile,BufRead *.c,*.h  setlocal ts=4 sw=4 sts=4 ai fileformat=unix
 " Go formatting

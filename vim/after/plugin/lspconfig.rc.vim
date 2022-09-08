@@ -149,6 +149,11 @@ lua << EOF
       },
     },
   }
+  require('lspconfig')['prismals'].setup {
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    on_attach = on_attach,
+    filetypes = { 'prisma' },
+  }
   nvim_lsp.elixirls.setup({
     cmd = {path_to_solc},
     args = {
@@ -240,7 +245,7 @@ lua << EOF
     vim.lsp.diagnostic.on_publish_diagnostics, {
       underline = false,
       virtual_text = false,
-      signs = false,
+      signs = true,
     }
   )
 EOF

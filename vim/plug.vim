@@ -44,6 +44,7 @@ Plug 'prettier/vim-prettier', {
   \ }
 Plug 'mfussenegger/nvim-dap'
 Plug 'mfussenegger/nvim-dap-python'
+Plug 'jparise/vim-graphql'
 
 " " fuzzy file finder
 Plug 'nvim-lua/popup.nvim'
