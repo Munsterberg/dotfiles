@@ -1,7 +1,4 @@
-if has("nvim")
-  let g:plug_home = stdpath('data') . '/plugged'
-endif
-call plug#begin()
+call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
 
 " Declare the list of plugins.
 " Color scheme plugins

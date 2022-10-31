@@ -40,7 +40,7 @@ lua << EOF
 
     -- formatting
     if client.name == 'tsserver' then
-      client.resolved_capabilities.document_formatting = false
+      client.server_capabilities.document_formatting = false
     end
 
     -- if client.resolved_capabilities.document_formatting then
@@ -102,7 +102,7 @@ lua << EOF
     }
   })
   require('lspconfig')['pyright'].setup {
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
     settings = {
       pyright = {
         useTabs = true,
@@ -113,12 +113,12 @@ lua << EOF
     on_attach = on_attach,
   }
   require('lspconfig')['tsserver'].setup {
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
     filetypes = { "typescript", "typescriptreact", "typescript.tsx", "javascript" },
     on_attach = on_attach,
   }
   require('lspconfig')['gopls'].setup {
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
     filetypes = { "go" },
     settings = {
       gopls = {
@@ -131,15 +131,15 @@ lua << EOF
     on_attach = on_attach,
   }
   require('lspconfig')['solargraph'].setup {
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
     on_attach = on_attach,
   }
   require('lspconfig')['ccls'].setup {
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
     on_attach = on_attach,
   }
   require('lspconfig').rls.setup {
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
     on_attach = on_attach,
     settings = {
       rust = {
@@ -150,7 +150,7 @@ lua << EOF
     },
   }
   require('lspconfig')['prismals'].setup {
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
     on_attach = on_attach,
     filetypes = { 'prisma' },
   }
@@ -159,14 +159,14 @@ lua << EOF
     args = {
       '--lsp',
     },
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
     on_attach = on_attach,
     settings = {
     }
   })
   nvim_lsp.elixirls.setup({
     cmd = {path_to_elixirls},
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()),
     on_attach = on_attach,
     settings = {
       elixirLS = {

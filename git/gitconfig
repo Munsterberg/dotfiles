@@ -36,7 +36,7 @@
   work = !sh -c 'git fetch && git checkout @{upstream} -tb \"$@\"' _
 [user]
 	email = jetrussell93@gmail.com
-	name = munsterberg
+	name = Jake
 [core]
 	editor = /usr/local/bin/nvim
 	excludesfile = /Users/munsterberg/.gitignore
@@ -54,3 +54,8 @@
 [rebase]
 	autoStash = true
 	autoSquash = true
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
