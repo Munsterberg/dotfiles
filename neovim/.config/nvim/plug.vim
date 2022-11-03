@@ -1,4 +1,12 @@
-call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
+" auto-install vim-plug
+const plug_path = stdpath('data') . '/site/autoload/plug.vim'
+if empty(glob(plug_path))
+  silent exe '!curl -fLo ' . plug_path . ' --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall
+endif
+
+call plug#begin(stdpath('data') . '/plugged')
 
 " Declare the list of plugins.
 " Color scheme plugins

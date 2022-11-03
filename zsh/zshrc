@@ -111,3 +111,8 @@ if [ $(date +'%j') != $(stat -f '%Sm' -t '%j' ~/.zcompdump) ]; then
 else
   compinit -C
 fi
+
+# pnpm
+export PNPM_HOME="/Users/munsterberg/Library/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+# pnpm end
