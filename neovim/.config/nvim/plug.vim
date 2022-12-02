@@ -1,5 +1,5 @@
 " auto-install vim-plug
-const plug_path = stdpath('data') . '/site/autoload/plug.vim'
+let plug_path = stdpath('data') . '/site/autoload/plug.vim'
 if empty(glob(plug_path))
   silent exe '!curl -fLo ' . plug_path . ' --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
@@ -26,7 +26,6 @@ Plug 'hrsh7th/nvim-cmp', {
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'hrsh7th/vim-vsnip-integ'
-Plug 'folke/trouble.nvim'
 Plug 'github/copilot.vim'
 
 " == General editor plugins ==
