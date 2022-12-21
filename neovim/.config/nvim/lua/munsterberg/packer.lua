@@ -26,8 +26,19 @@ return require('packer').startup(function(use)
 	use 'nvim-lua/plenary.nvim' 
 	use 'ThePrimeagen/harpoon'
 	use 'mbbill/undotree'
-	use 'tpope/vim-fugitive'
-	use {
+    use 'windwp/nvim-autopairs'
+    use 'tpope/vim-fugitive'
+    use 'tpope/vim-surround'
+    use 'tomtom/tcomment_vim'
+    use 'christoomey/vim-tmux-navigator'
+    use 'editorconfig/editorconfig-vim'
+    use 'janko/vim-test'
+    use 'jparise/vim-graphql'
+    use {
+        'prettier/vim-prettier',
+        run = 'yarn install',
+    }
+    use {
 		'VonHeikemen/lsp-zero.nvim',
 		requires = {
 			-- LSP Support
@@ -49,4 +60,3 @@ return require('packer').startup(function(use)
 		}
 	}
 end)
-

@@ -26,3 +26,21 @@ vim.opt.isfname:append("@-@")
 vim.opt.updatetime = 50
 
 vim.opt.colorcolumn = "80"
+
+vim.opt.confirm = true
+vim.opt.cursorline = true
+vim.opt.incsearch = true
+vim.opt.list = true
+vim.opt.listchars = { trail = '·', tab = '>~' }
+
+vim.cmd([[
+function! TrimEndLinesMain() abort
+  let save_cursor = getpos(".")
+  :silent! %s#\($\n\s*\)\+\%$##
+  call setpos('.', save_cursor)
+endfunction
+]])
+
+vim.api.nvim_exec([[ 
+autocmd BufWritePre * :call TrimEndLinesMain()
+]], false)
