@@ -1,0 +1,7 @@
+vim.keymap.set("n", "<leader>gc", ":Git commit<CR>")
+vim.keymap.set("n", "<leader>gg", vim.cmd.Git)
+vim.keymap.set("n", "<leader>gbc", ":Git checkout -b<space>")
+vim.keymap.set("n", "<leader>gb", ":Git branch<CR>")
+vim.keymap.set("n", "<leader>gl", ":Git log<CR>")
+vim.keymap.set("n", "<leader>gp", ":Git push<CR>")
+vim.keymap.set("n", "<leader>gmt", ":Git mergetool<CR>")

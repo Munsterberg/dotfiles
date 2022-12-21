@@ -1,0 +1,2 @@
+require("munsterberg")
+print("hello")
