@@ -37,6 +37,7 @@ lsp.on_attach(function(client, bufnr)
         return
     end
 
+    vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
     vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
     vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
     vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol, opts)
@@ -48,6 +49,12 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, opts)
     vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
 end)
+
+lsp.configure('tsserver', {
+  on_attach = on_attach,
+  filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
+  cmd = { "typescript-language-server", "--stdio" }
+})
 
 lsp.setup()
 
