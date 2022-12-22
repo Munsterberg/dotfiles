@@ -22,6 +22,10 @@ vim.opt.termguicolors = true
 vim.opt.scrolloff = 8
 vim.opt.signcolumn = "yes"
 vim.opt.isfname:append("@-@")
+vim.opt.updatetime = 250
+vim.wo.signcolumn = 'yes'
+vim.opt.termguicolors = true
+vim.opt.completeopt = 'menuone,noselect'
 
 vim.opt.updatetime = 50
 
