@@ -1,2 +1,1 @@
 require("munsterberg")
-print("hello")
