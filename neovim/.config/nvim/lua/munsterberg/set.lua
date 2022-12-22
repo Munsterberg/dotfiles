@@ -26,6 +26,8 @@ vim.opt.updatetime = 250
 vim.wo.signcolumn = 'yes'
 vim.opt.termguicolors = true
 vim.opt.completeopt = 'menuone,noselect'
+vim.opt.splitbelow = true
+vim.opt.splitright = true
 
 vim.opt.updatetime = 50
 

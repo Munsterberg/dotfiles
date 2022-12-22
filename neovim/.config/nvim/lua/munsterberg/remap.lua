@@ -21,10 +21,11 @@ vim.keymap.set("n", "<leader>bl", ":blast<CR>")
 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
-vim.keymap.set("n", "<C-j>", "<C-W><C-J>")
-vim.keymap.set("n", "<C-k>", "<C-W><C-K>")
-vim.keymap.set("n", "<C-l>", "<C-W><C-L>")
-vim.keymap.set("n", "<C-h>", "<C-W><C-H>")
+
+vim.keymap.set("n", "<leader>wj", "<C-W><C-J>")
+vim.keymap.set("n", "<leader>wk", "<C-W><C-K>")
+vim.keymap.set("n", "<leader>wl", "<C-W><C-L>")
+vim.keymap.set("n", "<leader>wh", "<C-W><C-H>")
 
 vim.keymap.set("n", "<leader>fa", ":Format<CR>")
 
