@@ -50,10 +50,7 @@ return require('packer').startup(function(use)
     use 'editorconfig/editorconfig-vim'
     use 'janko/vim-test'
     use 'jparise/vim-graphql'
-    use {
-      'prettier/vim-prettier',
-      run = 'yarn install',
-    }
+    use 'mhartington/formatter.nvim'
     use { -- LSP Configuration & Plugins
         'neovim/nvim-lspconfig',
         requires = {

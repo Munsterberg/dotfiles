@@ -4,7 +4,7 @@ vim.keymap.set("n", "-", vim.cmd.Ex)
 vim.keymap.set("n", "<leader>pv", vim.cmd.Vex)
 vim.keymap.set("i", "jk", "<Esc>")
 vim.keymap.set("n", "Y", "y$")
-vim.keymap.set("n", "<leader>pp", vim.cmd.Prettier)
+vim.keymap.set("n", "<leader>fa", ":Format<cr>")
 vim.keymap.set("n", "<space>", "<Nop>")
 vim.keymap.set("n", "<leader>co", "ggVG\"*y")
 vim.keymap.set("n", "<leader>so", ":source $MYVIMRC<cr>")
@@ -27,12 +27,10 @@ vim.keymap.set("n", "<leader>wk", "<C-W><C-K>")
 vim.keymap.set("n", "<leader>wl", "<C-W><C-L>")
 vim.keymap.set("n", "<leader>wh", "<C-W><C-H>")
 
-vim.keymap.set("n", "<leader>fa", ":Format<CR>")
-
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 
-vim.keymap.set({"n", "v"}, "<leader>y", [["+y]])
+vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
 vim.keymap.set("n", "<leader>Y", [["+Y]])
 
 vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
