@@ -38,6 +38,7 @@ vim.opt.cursorline = true
 vim.opt.incsearch = true
 vim.opt.list = true
 vim.opt.listchars = { trail = '·', tab = '>~' }
+vim.g['neoformat_try_node_exe'] = 1
 
 vim.cmd([[
 function! TrimEndLinesMain() abort

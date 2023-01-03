@@ -33,7 +33,7 @@ return require('packer').startup(function(use)
         after = 'nvim-treesitter',
     }
     use 'nvim-treesitter/playground'
-    use 'nvim-lua/plenary.nvim' 
+    use 'nvim-lua/plenary.nvim'
     use 'ThePrimeagen/harpoon'
     use 'mbbill/undotree'
     use 'ap/vim-buftabline'
@@ -50,7 +50,7 @@ return require('packer').startup(function(use)
     use 'editorconfig/editorconfig-vim'
     use 'janko/vim-test'
     use 'jparise/vim-graphql'
-    use 'mhartington/formatter.nvim'
+    use 'sbdchd/neoformat'
     use { -- LSP Configuration & Plugins
         'neovim/nvim-lspconfig',
         requires = {
