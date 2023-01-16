@@ -1,5 +1,5 @@
 --  This function gets run when an LSP connects to a particular buffer.
-local on_attach = function(_, bufnr)
+local on_attach = function(client, bufnr)
   -- NOTE: Remember that lua is a real programming language, and as such it is possible
   -- to define small helper and utility functions so you don't have to repeat yourself
   -- many times.
@@ -12,6 +12,11 @@ local on_attach = function(_, bufnr)
     end
 
     vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+  end
+
+  -- Disable since we are using null-ls for formatting
+  if client.name == 'tsserver' then
+    client.server_capabilities.document_formatting = false
   end
 
   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')

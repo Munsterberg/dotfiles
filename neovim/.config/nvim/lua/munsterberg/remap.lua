@@ -18,7 +18,6 @@ vim.keymap.set("n", "<leader>bp", ":bprev<CR>")
 vim.keymap.set("n", "<leader>bd", ":bdelete<CR>")
 vim.keymap.set("n", "<leader>bf", ":bfirst<CR>")
 vim.keymap.set("n", "<leader>bl", ":blast<CR>")
-vim.keymap.set("n", "<leader>nf", ":Neoformat<CR>")
 
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")

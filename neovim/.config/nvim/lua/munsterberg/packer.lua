@@ -12,7 +12,7 @@ return require('packer').startup(function(use)
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.0',
         -- or                            , branch = '0.1.x',
-        requires = { {'nvim-lua/plenary.nvim'} }
+        requires = { { 'nvim-lua/plenary.nvim' } }
     }
     use({
         'rose-pine/neovim',
@@ -50,19 +50,21 @@ return require('packer').startup(function(use)
     use 'editorconfig/editorconfig-vim'
     use 'janko/vim-test'
     use 'jparise/vim-graphql'
-    use 'sbdchd/neoformat'
     use { -- LSP Configuration & Plugins
         'neovim/nvim-lspconfig',
         requires = {
-          -- Automatically install LSPs to stdpath for neovim
-          'williamboman/mason.nvim',
-          'williamboman/mason-lspconfig.nvim',
+            -- Automatically install LSPs to stdpath for neovim
+            'williamboman/mason.nvim',
+            'williamboman/mason-lspconfig.nvim',
 
-          -- Useful status updates for LSP
-          'j-hui/fidget.nvim',
+            -- Useful status updates for LSP
+            'j-hui/fidget.nvim',
 
-          -- Additional lua configuration, makes nvim stuff amazing
-          'folke/neodev.nvim',
+            -- Additional lua configuration, makes nvim stuff amazing
+            'folke/neodev.nvim',
+
+            -- Formatting, code actions, etc
+            'jose-elias-alvarez/null-ls.nvim',
         },
     }
 
