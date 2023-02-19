@@ -116,3 +116,5 @@ fi
 export PNPM_HOME="/Users/munsterberg/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 # pnpm endexport PATH="/opt/homebrew/bin:$PATH"
+
+export BRANCHED_DEV_CONFIG=dev_jacob
