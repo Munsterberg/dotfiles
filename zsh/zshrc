@@ -118,3 +118,5 @@ export PATH="$PNPM_HOME:$PATH"
 # pnpm endexport PATH="/opt/homebrew/bin:$PATH"
 
 export BRANCHED_DEV_CONFIG=dev_jacob
+
+export PATH="$PATH:/Users/munsterberg/.foundry/bin"

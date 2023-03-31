@@ -4,6 +4,7 @@
   ci = commit -m
   st = status --short --branch
   sw = switch
+  swb = switch -c
   up = !git pull --rebase --prune $@ && git submodule update --init --recursive
   cob = checkout -b
   cm = !git add -A && git commit -m
