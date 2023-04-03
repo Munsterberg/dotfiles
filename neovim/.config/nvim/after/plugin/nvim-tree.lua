@@ -17,9 +17,13 @@ require("nvim-tree").setup({
     group_empty = true,
   },
   filters = {
-    dotfiles = true,
+    dotfiles = false,
+  },
+  view = {
+    side = "right"
   },
 })
 
-vim.keymap.set("n", "<leader>tt", ":NvimTreeToggle<CR>", {noremap = true, silent = true})
-vim.keymap.set("n", "<leader>tf", ":NvimTreeFindFile<CR>", {noremap = true, silent = true})
+vim.keymap.set("n", "<leader>tt", ":NvimTreeToggle<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>tf", ":NvimTreeFindFile<CR>", { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>tr", ":NvimTreeRefresh<CR>", { noremap = true, silent = true })
