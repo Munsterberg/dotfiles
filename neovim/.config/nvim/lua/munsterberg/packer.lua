@@ -68,9 +68,12 @@ return require('packer').startup(function(use)
             'jose-elias-alvarez/null-ls.nvim',
         },
     }
-
     use { -- Autocompletion
         'hrsh7th/nvim-cmp',
         requires = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
+    }
+    use { -- File tree
+        'nvim-tree/nvim-tree.lua',
+        requires = { 'nvim-tree/nvim-web-devicons' }
     }
 end)
