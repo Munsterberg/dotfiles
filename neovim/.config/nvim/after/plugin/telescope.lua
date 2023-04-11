@@ -5,14 +5,16 @@ vim.keymap.set('n', '<leader>?', builtin.oldfiles, {})
 vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
 vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
-vim.keymap.set('n', '<leader>fs', function() 
-	builtin.grep_string({ search = vim.fn.input('Grep > ') })
+vim.keymap.set('n', '<leader>fc', builtin.commands, {})
+vim.keymap.set('n', '<leader>fl', builtin.quickfix, {})
+vim.keymap.set('n', '<leader>fs', function()
+  builtin.grep_string({ search = vim.fn.input('Grep > ') })
 end)
 
 local actions = require('telescope.actions')
 -- Global remapping
 ------------------------------
-require('telescope').setup{
+require('telescope').setup {
   defaults = {
     vimgrep_arguments = {
       'rg',
@@ -28,6 +30,8 @@ require('telescope').setup{
       i = {
         ["<C-j>"] = actions.move_selection_next,
         ["<C-k>"] = actions.move_selection_previous,
+        ["<C-Q>"] = actions.smart_send_to_qflist + actions.open_qflist,
+        ["<C-q>"] = actions.smart_send_to_qflist + actions.open_qflist,
       },
     },
   }
