@@ -29,6 +29,7 @@
   pushf = push --force-with-lease
   undopush = push --force origin HEAD^:master
   deletemerged = "!git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 git branch -d"
+  deletemissing = "!git branch -vv | grep ': gone]' | grep -v '\\*' | awk '{ print $1; }' | xargs -r git branch -d --force"
   logme = log --color --name-only --decorate=full --author="jetrussell93@gmail.com"
   release-notes = "!f() { \
     git log $1..$2 --no-merges --oneline --pretty=format:'%s' | \
