@@ -33,6 +33,7 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]])
 vim.keymap.set("n", "<leader>Y", [["+Y]])
 
+vim.keymap.set("n", "<leader>qo", "<cmd>copen<CR>zz")
 vim.keymap.set("n", "<leader>qn", "<cmd>cnext<CR>zz")
 vim.keymap.set("n", "<leader>qp", "<cmd>cprev<CR>zz")
 vim.keymap.set("n", "<leader>k", "<cmd>lnext<CR>zz")
@@ -57,4 +58,10 @@ function! DeleteHiddenBuffers() abort
   endfor
 endfunction
 nnoremap <leader>bc :call DeleteHiddenBuffers()<CR>
+]], false)
+
+vim.api.nvim_exec([[
+command! ClearQuickfixList cexpr []
+
+nnoremap <leader>qc :ClearQuickfixList<CR>
 ]], false)
