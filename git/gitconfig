@@ -37,6 +37,7 @@
   }; f"
   summaryme = log --abbrev-commit --pretty=oneline --author="jetrussell93@gmail.com" --since=last.mon --reverse
   work = !sh -c 'git fetch && git checkout @{upstream} -tb \"$@\"' _
+  count-lines = "! git log --author=\"$1\" --pretty=tformat: --numstat | awk '{ add += $1; subs += $2; loc += $1 - $2 } END { printf \"added lines: %s, removed lines: %s, total lines: %s\\n\", add, subs, loc }' #"
 [user]
 	email = jetrussell93@gmail.com
 	name = Jake
