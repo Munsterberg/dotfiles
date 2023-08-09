@@ -6,3 +6,4 @@ alias brewup="brew update; brew upgrade; brew cleanup --prune-prefix; brew docto
 alias ctags="`brew --prefix`/bin/ctags"
 alias poetry_shell='. "$(dirname $(poetry run which python))/activate"'
 alias delfeat="git br | grep feature/ | xargs git br -D"
+alias lg="lazygit"
