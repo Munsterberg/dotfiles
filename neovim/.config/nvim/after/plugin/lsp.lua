@@ -19,28 +19,6 @@ local on_attach = function(client, bufnr)
     client.server_capabilities.document_formatting = false
   end
 
-local lspconfig = require 'lspconfig'
-local configs = require 'lspconfig.configs'
-
--- Solidity LSP configuration
-if not lspconfig.solidity then
-  configs.solidity = {
-    default_config = {
-      cmd = {'nomicfoundation-solidity-language-server', '--stdio'},
-      filetypes = { 'solidity' },
-      root_dir = lspconfig.util.find_git_ancestor,
-      single_file_support = true,
-    },
-  }
-end
-
-
-lspconfig.solidity.setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-  settings = servers.solidity,
-}
-
   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
   nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
@@ -80,8 +58,9 @@ local servers = {
   -- pyright = {},
   -- rust_analyzer = {},
   -- tsserver = {},
-  solidity = {},
 }
+
+
 
 -- Setup neovim lua configuration
 require('neodev').setup()
@@ -95,6 +74,25 @@ require('mason').setup()
 
 -- Ensure the servers above are installed
 local mason_lspconfig = require 'mason-lspconfig'
+local lspconfig = require('lspconfig')
+local configs = require('lspconfig/configs')
+
+if not lspconfig.solidity then
+  configs.solidity = {
+    default_config = {
+      cmd = { 'nomicfoundation-solidity-language-server', '--stdio' },
+      filetypes = { 'solidity' },
+      root_dir = lspconfig.util.find_git_ancestor,
+      single_file_support = true,
+    },
+  }
+end
+
+lspconfig.solidity.setup {
+  capabilities = capabilities,
+  on_attach = on_attach,
+  settings = servers.solidity,
+}
 
 mason_lspconfig.setup {
   ensure_installed = vim.tbl_keys(servers),
