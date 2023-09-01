@@ -48,6 +48,10 @@ function! TrimEndLinesMain() abort
 endfunction
 ]])
 
-vim.api.nvim_exec([[ 
-autocmd BufWritePre * :call TrimEndLinesMain()
+vim.api.nvim_exec([[
+  autocmd BufWritePre * :call TrimEndLinesMain()
+]], false)
+
+vim.api.nvim_exec([[
+  autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }} })
 ]], false)

@@ -43,14 +43,17 @@ return require('packer').startup(function(use)
     use 'tpope/vim-rhubarb'
     use 'lewis6991/gitsigns.nvim'
     use 'tpope/vim-surround'
-    use 'numToStr/Comment.nvim' -- "gc" to comment visual regions/lines
-    use 'tpope/vim-sleuth' -- Detect tabstop and shiftwidth automatically
-    use 'nvim-lualine/lualine.nvim' -- Fancier statusline
+    use 'numToStr/Comment.nvim'               -- "gc" to comment visual regions/lines
+    use 'tpope/vim-sleuth'                    -- Detect tabstop and shiftwidth automatically
+    use 'nvim-lualine/lualine.nvim'           -- Fancier statusline
     use 'lukas-reineke/indent-blankline.nvim' -- Add indentation guides even on blank lines
     use 'christoomey/vim-tmux-navigator'
     use 'editorconfig/editorconfig-vim'
     use 'janko/vim-test'
     use 'jparise/vim-graphql'
+    use 'tpope/vim-dadbod'
+    use 'kristijanhusak/vim-dadbod-ui'
+    use 'kristijanhusak/vim-dadbod-completion'
     use {
         'j-hui/fidget.nvim',
         tag = 'legacy',
