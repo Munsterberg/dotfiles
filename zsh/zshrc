@@ -157,3 +157,10 @@ if [ -f '/Users/munsterberg/Downloads/google-cloud-sdk/completion.zsh.inc' ]; th
 # fi
 # unset __conda_setup
 # # <<< conda initialize <<<
+
+# bun completions
+[ -s "/Users/munsterberg/.bun/_bun" ] && source "/Users/munsterberg/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
