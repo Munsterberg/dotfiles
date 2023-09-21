@@ -86,4 +86,15 @@ return require('packer').startup(function(use)
         requires = { 'nvim-tree/nvim-web-devicons' }
     }
     use 'wakatime/vim-wakatime'
+    use({
+        'jackMort/ChatGPT.nvim',
+        config = function()
+            require('chatgpt').setup()
+        end,
+        requires = {
+            'MunifTanjim/nui.nvim',
+            'nvim-lua/plenary.nvim',
+            'nvim-telescope/telescope.nvim'
+        }
+    })
 end)

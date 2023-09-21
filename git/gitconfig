@@ -6,6 +6,7 @@
   sw = switch
   swb = switch -c
   up = !git pull --rebase --prune $@ && git submodule update --init --recursive
+  fm = !git fetch origin master
   cob = checkout -b
   cm = !git add -A && git commit -m
   save = !git add -A && git commit -m 'SAVEPOINT'
