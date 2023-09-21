@@ -121,7 +121,7 @@ require("chatgpt").setup({
 		},
 	},
 	openai_params = {
-		model = "gpt-4",
+		model = "gpt-3.5-turbo",
 		frequency_penalty = 0,
 		presence_penalty = 0,
 		max_tokens = 300,
@@ -139,3 +139,7 @@ require("chatgpt").setup({
 	show_quickfixes_cmd = "Trouble quickfix",
 	predefined_chat_gpt_prompts = "https://raw.githubusercontent.com/f/awesome-chatgpt-prompts/main/prompts.csv",
 })
+
+vim.keymap.set("n", "<leader>aic", ":ChatGPT<CR>")
+vim.keymap.set("n", "<leader>aia", ":ChatGPTActAs<CR>")
+vim.keymap.set("v", "<leader>ait", "<Esc>:ChatGPTEditWithInstructions<CR>")
