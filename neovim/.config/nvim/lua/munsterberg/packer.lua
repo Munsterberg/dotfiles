@@ -33,6 +33,8 @@ return require('packer').startup(function(use)
         'nvim-treesitter/nvim-treesitter-textobjects',
         after = 'nvim-treesitter',
     }
+    use 'ray-x/go.nvim'
+    use 'ray-x/guihua.lua' -- recommended if need floating window support
     use 'nvim-treesitter/playground'
     use 'nvim-lua/plenary.nvim'
     use 'ThePrimeagen/harpoon'
