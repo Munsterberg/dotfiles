@@ -13,7 +13,7 @@ zet() {
   nvim "+Zet $*"
 }
 
-plugins=(git python npm tmux vscode colorize docker)
+plugins=(git python npm tmux vscode colorize)
 
 source $ZSH/oh-my-zsh.sh
 

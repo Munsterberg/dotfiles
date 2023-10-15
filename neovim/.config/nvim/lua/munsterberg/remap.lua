@@ -6,7 +6,7 @@ vim.keymap.set("i", "jk", "<Esc>")
 vim.keymap.set("n", "Y", "y$")
 vim.keymap.set("n", "<leader>fa", vim.lsp.buf.format)
 vim.keymap.set("n", "<space>", "<Nop>")
-vim.keymap.set("n", "<leader>co", "ggVG\"*y")
+vim.keymap.set("n", "<leader>co", 'ggVG"*y')
 vim.keymap.set("n", "<leader>so", ":source $MYVIMRC<cr>")
 vim.keymap.set("n", "<leader>v", ":vnew <C-R>=escape(expand(\"%:p:h\"), '') . '/'<cr>")
 vim.keymap.set("n", "<leader>s", ":split <C-R>=escape(expand(\"%:p:h\"), '') . '/'<cr>")
@@ -49,7 +49,8 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist)
 vim.keymap.set("n", "gh", "<cmd>diffget //2<CR>")
 vim.keymap.set("n", "gH", "<cmd>diffget //3<CR>")
 
-vim.api.nvim_exec([[
+vim.api.nvim_exec(
+	[[
 function! DeleteHiddenBuffers() abort
   let tpbl=[]
   call map(range(1, tabpagenr('$')), 'extend(tpbl, tabpagebuflist(v:val))')
@@ -58,10 +59,15 @@ function! DeleteHiddenBuffers() abort
   endfor
 endfunction
 nnoremap <leader>bc :call DeleteHiddenBuffers()<CR>
-]], false)
+]],
+	false
+)
 
-vim.api.nvim_exec([[
+vim.api.nvim_exec(
+	[[
 command! ClearQuickfixList cexpr []
 
 nnoremap <leader>qc :ClearQuickfixList<CR>
-]], false)
+]],
+	false
+)
